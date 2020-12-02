@@ -10,7 +10,7 @@ public interface HistoryDao {
 
     ArrayList<History> findAllHistory();
 
-    void saveHistory(History entity);
+    History saveHistory(History entity);
 
     void deleteHistory(History entity);
 

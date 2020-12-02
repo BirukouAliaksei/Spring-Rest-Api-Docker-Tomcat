@@ -51,12 +51,12 @@ public class History {
     @Column(name = "scooter_id")
     private int scooterId;
     @Transient
-    private Double discount = 0.9;
+    private String discount = "discount";
 
     public History() {
     }
 
-    public History(int userId, Double mileade, LocalDateTime startTime, LocalDateTime finishTime, int startLocationId, int finishLocationId, String offerType, Double offerCost, int scooterId, Double discount) {
+    public History(int userId, Double mileade, LocalDateTime startTime, LocalDateTime finishTime, int startLocationId, int finishLocationId, String offerType, Double offerCost, int scooterId, String discount) {
         this.userId = userId;
         this.mileade = mileade;
         this.startTime = startTime;
@@ -79,11 +79,11 @@ public class History {
         this.id = id;
     }
 
-    public Double getDiscount() {
+    public String getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(String discount) {
         this.discount = discount;
     }
 

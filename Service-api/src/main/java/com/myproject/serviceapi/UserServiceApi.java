@@ -1,5 +1,6 @@
 package com.myproject.serviceapi;
 
+import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.UserDto;
 import org.springframework.http.HttpStatus;
 
@@ -17,7 +18,7 @@ public interface UserServiceApi {
 
     UserDto findById(int id);
 
-    void startTrip(int id, int scooterId, String offerType, String discount);
+    HistoryDto startTrip(int id, HistoryDto historyDto);
 
-    void finishTrip(int id, int finishLocationId, Double mileage);
+    HistoryDto finishTrip(int id, HistoryDto historyDto, int historyId);
 }

@@ -1,12 +1,6 @@
 package com.myproject.dto.dto;
 
-import com.myproject.domain.entity.History;
-import com.myproject.domain.entity.Scooter;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import lombok.Data;
 
 @Data
 public class RentalPointDto {
@@ -21,7 +15,6 @@ public class RentalPointDto {
 
     private int longitude;
 
-    private List<History> histories;
 
 //    private Scooter scooters;
 

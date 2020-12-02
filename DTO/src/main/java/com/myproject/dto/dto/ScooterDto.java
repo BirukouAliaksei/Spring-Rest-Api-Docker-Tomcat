@@ -1,9 +1,6 @@
 package com.myproject.dto.dto;
 
-import com.myproject.domain.entity.History;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class ScooterDto {

@@ -30,20 +30,15 @@ public class RestUserController {
     @PostMapping(value = "/{id}/history")
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
-    public void startTrip(@PathVariable("id") int id,
-                          @RequestParam("scooter_id") int scooterId,
-                          @RequestParam("offer_type") String offerType,
-                          @RequestParam("discount") String discount) {
-        userServiceApi.startTrip(id, scooterId, offerType, discount);
+    public HistoryDto startTrip(@PathVariable("id") int id, @RequestBody HistoryDto historyDto) {
+        return userServiceApi.startTrip(id, historyDto);
     }
 
-    @PutMapping(value = "/{id}/history")
+    @PutMapping(value = "/{id}/history/{historyId}")
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
-    public void finishTrip(@PathVariable("id") int id,
-                           @RequestParam("finish_location_id") int finishLocationId,
-                           @RequestParam("mileage") Double mileage) {
-        userServiceApi.finishTrip(id, finishLocationId, mileage);
+    public HistoryDto finishTrip(@PathVariable("id") int id, @RequestBody HistoryDto historyDto,@PathVariable("historyId") int historyId) {
+        return userServiceApi.finishTrip(id, historyDto, historyId);
     }
 
 
@@ -61,7 +56,6 @@ public class RestUserController {
         return userServiceApi.delete(id);
     }
 
-
     @GetMapping
 //    @Secured(value = "ROLE_ADMIN")
     public ArrayList<UserDto> findAll() {
@@ -77,7 +71,7 @@ public class RestUserController {
 
     @GetMapping(value = "/{id}/history")
     public ArrayList<HistoryDto> findHistoryById(@PathVariable("id") int id) {
-        return historyServiceApi.findAllHistoryById(id);
+        return historyServiceApi.findHistoryByUserId(id);
     }
 }
 

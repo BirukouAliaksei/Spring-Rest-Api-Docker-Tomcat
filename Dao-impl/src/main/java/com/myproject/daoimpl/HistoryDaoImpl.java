@@ -14,7 +14,7 @@ public class HistoryDaoImpl extends GenericDaoImpl<History> implements HistoryDa
         super(History.class);
     }
 
-    @Transactional
+
     @Override
     public History findHistoryById(int id) {
         return this.findById(id);
@@ -28,8 +28,8 @@ public class HistoryDaoImpl extends GenericDaoImpl<History> implements HistoryDa
 
     @Transactional
     @Override
-    public void saveHistory(History entity) {
-        this.save(entity);
+    public History saveHistory(History entity) {
+       return this.save(entity);
     }
 
     @Transactional

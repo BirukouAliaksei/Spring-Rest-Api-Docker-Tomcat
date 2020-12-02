@@ -7,7 +7,9 @@ import com.myproject.domain.entity.History;
 import com.myproject.domain.entity.Scooter;
 import com.myproject.domain.entity.User;
 import com.myproject.domain.enums.OfferType;
+import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.UserDto;
+import com.myproject.dto.mapper.HistoryMapper;
 import com.myproject.dto.mapper.UserMapper;
 import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
@@ -37,8 +39,12 @@ public class UserService implements UserServiceApi {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private HistoryMapper historyMapper;
+
     private Double offerCost = 1.0;
     private Double offerSubscription = offerCost * 5;
+    private Double discount = 0.9;
 
     @Transactional
     @Override
@@ -80,58 +86,58 @@ public class UserService implements UserServiceApi {
 
     @Transactional
     @Override
-    public void startTrip(int id, int scooterId, String offerType, String discount) {
-        User user = userDao.findUserById(id);
-        int userId = user.getId();
-        Scooter scooter = scooterDao.findScooterById(scooterId);
-        History history = new History();
-        Double scooterDiscount = history.getDiscount();
-        if (offerType.equals(OfferType.SUBSCRIPTION.toString())) {
-            if (discount.equals("discount")) {
-                offerCost = scooter.getCost() * 10 * scooterDiscount;
+    public HistoryDto startTrip(int id, HistoryDto historyDto) {
+        History history = historyMapper.toEntity(historyDto);
+        Scooter scooter = scooterDao.findScooterById(history.getScooterId());
+        String scooterDiscount = history.getDiscount();
+        if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())) {
+            if (history.getDiscount().equals(scooterDiscount)) {
+                offerCost = scooter.getCost() * 10 * discount;
             } else {
                 offerCost = scooter.getCost() * 10;
             }
         }
-        offerCost = scooter.getCost() * 10 * scooterDiscount;
+        offerCost = scooter.getCost() * 10 * discount;
 
-        if (offerType.equals(OfferType.ONCE_TIME.toString())) {
-            if (discount.equals("discount")) {
-                offerCost = scooter.getCost() * scooterDiscount;
+        if (history.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
+            if (history.getDiscount().equals(scooterDiscount)) {
+                offerCost = scooter.getCost() * discount;
             } else {
                 offerCost = scooter.getCost();
             }
         }
-        history.setUserId(userId);
+        history.setUserId(id);
         history.setMileade(0.0);
         history.setOfferCost(0.0);
-        history.setOfferType(offerType);
+        history.setOfferType(history.getOfferType());
+        history.setStartLocationId(scooter.getRentalPointId());
         history.setFinishLocationId(0);
-        history.setScooterId(scooterId);
+        history.setScooterId(history.getScooterId());
         history.setStartTime(LocalDateTime.now());
         history.setFinishTime(LocalDateTime.now());
-        history.setStartLocationId(scooter.getRentalPointId());
-        historyDao.saveHistory(history);
+
+        return historyMapper.toDto(historyDao.saveHistory(history));
     }
 
     @Transactional
     @Override
-    public void finishTrip(int id, int finishLocationId, Double mileage) {
-//        User user = userDao.findUserById(id);
-        History history = historyDao.findHistoryById(id);
+    public HistoryDto finishTrip(int id, HistoryDto historyDto, int historyId) {
+        History newHistory = historyMapper.toEntity(historyDto);
+        History history = historyDao.findHistoryById(historyId);
         history.setUserId(id);
-        history.setMileade(mileage);
+        history.setMileade(newHistory.getMileade());
         history.setOfferCost(offerCost);
         history.setOfferType(history.getOfferType());
         history.setStartLocationId(history.getStartLocationId());
-        history.setFinishLocationId(finishLocationId);
+        history.setFinishLocationId(newHistory.getFinishLocationId());
         history.setStartTime(history.getStartTime());
         history.setFinishTime(LocalDateTime.now());
         history.setScooterId(history.getScooterId());
-        historyDao.updateHistory(history);
+
         Scooter scooter = scooterDao.findScooterById(history.getScooterId());
-        scooter.setRentalPointId(finishLocationId);
+        scooter.setRentalPointId(newHistory.getFinishLocationId());
         scooterDao.updateScooter(scooter);
+        return historyMapper.toDto(historyDao.updateHistory(history));
     }
 
     @Transactional

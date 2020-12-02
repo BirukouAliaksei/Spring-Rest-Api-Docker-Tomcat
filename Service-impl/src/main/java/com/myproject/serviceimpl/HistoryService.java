@@ -68,7 +68,7 @@ public class HistoryService implements HistoryServiceApi {
         return null;
     }
 
-    @Transactional
+
     @Override
     public HistoryDto findById(int id) {
         return historyMapper.toDto(historyDaoApi.findHistoryById(id));
@@ -76,16 +76,17 @@ public class HistoryService implements HistoryServiceApi {
 
     @Transactional
     @Override
-    public ArrayList<HistoryDto> findAllHistoryById(int id) {
+    public ArrayList<HistoryDto> findHistoryByUserId(int id) {
         ArrayList<HistoryDto> idList = new ArrayList<>();
-        if (historyDaoApi.findAllHistory() != null) {
-            for (History history : historyDaoApi.findAllHistory()) {
+        ArrayList<History> histories = historyDaoApi.findAllHistory();
+        if (histories != null) {
+            for (History history : histories) {
                 if (history.getUserId() == id) {
                     idList.add(historyMapper.toDto(history));
                 }
             }
-        } else throw new HistoryServiceException("History service exception");
-        return idList;
+            return idList;
+        } else throw new HistoryServiceException("History service throws null");
     }
 
     @Transactional

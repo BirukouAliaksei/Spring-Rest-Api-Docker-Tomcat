@@ -1,0 +1,7 @@
+package com.myproject.serviceimpl.exceptions;
+
+public class UserServiceException extends RuntimeException {
+    public UserServiceException(String message) {
+        super(message);
+    }
+}

@@ -15,8 +15,6 @@ public interface ScooterServiceApi {
 
     ScooterDto update(ScooterDto entity, int id);
 
-    void ScooterTariffication (Double rate);
-
     ScooterDto findById(int id);
 
     ArrayList<ScooterDto> findRentalPointScootersById(int id);

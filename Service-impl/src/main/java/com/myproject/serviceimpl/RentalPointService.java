@@ -80,6 +80,11 @@ public class RentalPointService implements RentalPointServiceApi {
 
     @Override
     public RentalPointDto rentalPointInfoById(int id) {
-        return rentalPointMapper.toDto(rentalPointDao.findRentalPointById(id));
+        RentalPoint rentalPoint = rentalPointDao.findRentalPointById(id);
+        if (rentalPoint == null) {
+            throw new RentalPointServiceException("Rentall point service throw null");
+        } else {
+            return rentalPointMapper.toDto(rentalPoint);
+        }
     }
 }

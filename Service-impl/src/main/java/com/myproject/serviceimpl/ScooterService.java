@@ -110,13 +110,14 @@ public class ScooterService implements ScooterServiceApi {
         scooterDao.updateScooter(scooter);
     }
 
-    @Override
-    public void ScooterTariffication(Double rate) {
-    }
-
 
     @Override
     public ScooterDto findById(int id) {
-        return scooterMapper.toDto(scooterDao.findScooterById(id));
+        Scooter scooter = scooterDao.findScooterById(id);
+        if (scooter == null) {
+            throw new ScooterServiceException("Error");
+        } else {
+            return scooterMapper.toDto(scooter);
+        }
     }
 }

@@ -39,7 +39,6 @@ public class UserService implements UserServiceApi {
 
     private Double offerCost = 1.0;
     private Double offerSubscription = offerCost * 5;
-//    private Double discount = 0.9;
 
     @Transactional
     @Override
@@ -75,14 +74,15 @@ public class UserService implements UserServiceApi {
         if (user == null) {
             throw new UserServiceException("Error");
         } else {
-            return userMapper.toDto(userDao.findUserById(id));
+            return userMapper.toDto(user);
         }
     }
 
     @Transactional
     @Override
     public void startTrip(int id, int scooterId, String offerType, String discount) {
-//        User user = userDao.findUserById(id);
+        User user = userDao.findUserById(id);
+        int userId = user.getId();
         Scooter scooter = scooterDao.findScooterById(scooterId);
         History history = new History();
         Double scooterDiscount = history.getDiscount();
@@ -102,7 +102,7 @@ public class UserService implements UserServiceApi {
                 offerCost = scooter.getCost();
             }
         }
-        history.setUserId(id);
+        history.setUserId(userId);
         history.setMileade(0.0);
         history.setOfferCost(0.0);
         history.setOfferType(offerType);

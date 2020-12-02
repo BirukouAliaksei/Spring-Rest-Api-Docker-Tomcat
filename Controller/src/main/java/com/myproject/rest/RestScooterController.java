@@ -45,8 +45,8 @@ public class RestScooterController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
-    public void delete(@PathVariable("id") int id) {
-        scooterServiceApi.delete(id);
+    public HttpStatus delete(@PathVariable("id") int id) {
+       return scooterServiceApi.delete(id);
     }
 
     @GetMapping

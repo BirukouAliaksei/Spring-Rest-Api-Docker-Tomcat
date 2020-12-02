@@ -1,7 +1,7 @@
 package com.myproject.serviceapi;
 
-import com.myproject.domain.entity.Scooter;
 import com.myproject.dto.dto.ScooterDto;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public interface ScooterServiceApi {
 
     void save(ScooterDto entity);
 
-    void delete(int id);
+    HttpStatus delete(int id);
 
     ScooterDto update(ScooterDto entity, int id);
 

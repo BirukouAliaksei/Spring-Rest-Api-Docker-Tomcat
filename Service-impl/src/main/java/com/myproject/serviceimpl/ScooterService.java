@@ -1,25 +1,18 @@
 package com.myproject.serviceimpl;
 
 import com.myproject.daoapi.HistoryDao;
-import com.myproject.daoapi.RentalPointDao;
 import com.myproject.daoapi.ScooterDao;
 import com.myproject.daoapi.UserDao;
-import com.myproject.domain.entity.History;
-import com.myproject.domain.entity.RentalPoint;
 import com.myproject.domain.entity.Scooter;
-import com.myproject.domain.entity.User;
-import com.myproject.domain.enums.OfferType;
 import com.myproject.dto.dto.ScooterDto;
-import com.myproject.dto.mapper.RentalPointMapper;
 import com.myproject.dto.mapper.ScooterMapper;
 import com.myproject.serviceapi.ScooterServiceApi;
 import com.myproject.serviceimpl.exceptions.ScooterServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Service
@@ -68,20 +61,8 @@ public class ScooterService implements ScooterServiceApi {
     @Override
     public void save(ScooterDto entity) {
         Scooter scooter = scooterMapper.toEntity(entity);
-//        User user = userDao.findUserById(1);
-//        History history = new History();
-//        history.setUserId2(user.getId());
-//        history.setMileade(2.0);
-//        history.setDate(LocalDate.of(2020,2,2));
-//        history.setStartLocationId(scooter.getRentalPointId());
-//        history.setFinishLocationId(1);
-//        history.setOfferType(OfferType.ONCE_TIME.toString());
-//        history.setOfferCost(5.0);
-//        history.setScooterId(scooter.getId());
         if (scooter != null) {
             scooterDao.saveScooter(scooter);
-//            history.setFinishLocationId(1);
-//            historyDao.saveHistory(history);
         } else {
             throw new ScooterServiceException("Scooter service throws null");
         }
@@ -89,17 +70,19 @@ public class ScooterService implements ScooterServiceApi {
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public HttpStatus delete(int id) {
         ArrayList<Scooter> scooters;
         if (scooterDao.findAllScooters() != null) {
             scooters = scooterDao.findAllScooters();
             for (Scooter scooter : scooters) {
                 if (scooter.getId() == id) {
                     scooterDao.deleteScooter(scooter);
+                    return HttpStatus.OK;
                 }
             }
         } else throw new ScooterServiceException("Scooter service throws null");
 
+        return HttpStatus.BAD_REQUEST;
     }
 
     @Transactional

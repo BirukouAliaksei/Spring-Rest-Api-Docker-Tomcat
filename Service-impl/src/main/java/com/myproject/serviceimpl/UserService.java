@@ -12,6 +12,7 @@ import com.myproject.dto.mapper.UserMapper;
 import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,16 +136,18 @@ public class UserService implements UserServiceApi {
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public HttpStatus delete(int id) {
         ArrayList<User> users;
         if (userDao.findAllUsers() != null) {
             users = userDao.findAllUsers();
             for (User user : users) {
                 if (user.getId() == id) {
                     userDao.deleteUser(user);
+                    return HttpStatus.OK;
                 }
             }
         } else throw new UserServiceException("User service throws null");
+        return HttpStatus.BAD_REQUEST;
     }
 
     @Transactional

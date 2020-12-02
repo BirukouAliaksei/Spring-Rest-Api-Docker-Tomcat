@@ -5,7 +5,6 @@ import com.myproject.dto.dto.UserDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.UserServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,9 +57,10 @@ public class RestUserController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
-    public @ResponseBody void deleteById(@PathVariable("id") int id) {
-        userServiceApi.delete(id);
+    public HttpStatus deleteById(@PathVariable("id") int id) {
+        return userServiceApi.delete(id);
     }
+
 
     @GetMapping
 //    @Secured(value = "ROLE_ADMIN")
@@ -70,7 +70,8 @@ public class RestUserController {
 
 
     @GetMapping(value = "/{id}")
-    public @ResponseBody UserDto findById(@PathVariable("id") int id) {
+    public @ResponseBody
+    UserDto findById(@PathVariable("id") int id) {
         return userServiceApi.findById(id);
     }
 

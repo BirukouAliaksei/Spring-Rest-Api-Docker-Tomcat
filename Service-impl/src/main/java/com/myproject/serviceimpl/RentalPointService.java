@@ -1,15 +1,13 @@
 package com.myproject.serviceimpl;
 
 import com.myproject.daoapi.RentalPointDao;
-import com.myproject.daoapi.ScooterDao;
 import com.myproject.domain.entity.RentalPoint;
-import com.myproject.domain.entity.Scooter;
 import com.myproject.dto.dto.RentalPointDto;
 import com.myproject.dto.mapper.RentalPointMapper;
-import com.myproject.dto.mapper.ScooterMapper;
 import com.myproject.serviceapi.RentalPointServiceApi;
 import com.myproject.serviceimpl.exceptions.RentalPointServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,17 +51,19 @@ public class RentalPointService implements RentalPointServiceApi {
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public HttpStatus delete(int id) {
         ArrayList<RentalPoint> rentalPoints;
         if (rentalPointDao.findAllRentalPoints() != null) {
             rentalPoints = rentalPointDao.findAllRentalPoints();
             for (RentalPoint rentalPoint : rentalPoints) {
                 if (rentalPoint.getId() == id) {
                     rentalPointDao.deleteRentalPoint(rentalPoint);
+                    return HttpStatus.OK;
                 }
             }
         } else throw new RentalPointServiceException("Rentalpoint service throws null");
 
+        return HttpStatus.BAD_REQUEST;
     }
 
     @Transactional
@@ -81,8 +81,6 @@ public class RentalPointService implements RentalPointServiceApi {
 
     @Override
     public RentalPointDto rentalPointInfoById(int id) {
-//        ArrayList<RentalPointDto> scooters = new ArrayList<>();
-
         return rentalPointMapper.toDto(rentalPointDao.findRentalPointById(id));
     }
 }

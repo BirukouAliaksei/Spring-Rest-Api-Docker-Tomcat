@@ -1,7 +1,6 @@
 package com.myproject.daoapi;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface GenericDao<T> {
 
@@ -11,7 +10,7 @@ public interface GenericDao<T> {
 
     ArrayList<T> findAll();
 
-    void save(T entity);
+    T save(T entity);
 
     void delete(T entity);
 

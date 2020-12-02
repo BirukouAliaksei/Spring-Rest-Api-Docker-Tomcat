@@ -1,4 +1,4 @@
-package com.myproject.serviceimpl.exceptions;
+package com.myproject.daoimpl.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UserServiceException.class)
-    protected ResponseEntity<AwesomeException> handleThereIsNoSuchUserException() {
+    @ExceptionHandler(RequestedResourceIsNotAvailableException.class)
+    protected ResponseEntity<AwesomeException> requestedResourceIsNotAvailableException() {
         return new ResponseEntity<>(new AwesomeException("The requested resource is not available"), HttpStatus.NOT_FOUND);
     }
 

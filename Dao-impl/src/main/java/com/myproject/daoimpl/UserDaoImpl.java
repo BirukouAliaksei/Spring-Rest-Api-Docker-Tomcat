@@ -37,14 +37,14 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Transactional
     @Override
-    public void saveUser(User entity) {
-        this.save(entity);
+    public User saveUser(User entity) {
+       return this.save(entity);
     }
 
     @Transactional
     @Override
     public void deleteUser(User entity) {
-        this.delete(entity);
+      this.delete(entity);
     }
 
     @Transactional

@@ -5,6 +5,7 @@ import com.myproject.dto.dto.UserDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.UserServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,8 @@ public class RestUserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
-    public void create(@RequestBody UserDto userDto) {
-        userServiceApi.save(userDto);
+    public UserDto create(@RequestBody UserDto userDto) {
+        return userServiceApi.save(userDto);
     }
 
     @PostMapping(value = "/{id}/history")
@@ -50,14 +51,14 @@ public class RestUserController {
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
-    public void update(@RequestBody UserDto userDto, @PathVariable("id") int id) {
-        userServiceApi.update(userDto, id);
+    public UserDto update(@RequestBody UserDto userDto, @PathVariable("id") int id) {
+        return userServiceApi.update(userDto, id);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
-    public void delete(@PathVariable("id") int id) {
+    public @ResponseBody void deleteById(@PathVariable("id") int id) {
         userServiceApi.delete(id);
     }
 
@@ -67,8 +68,9 @@ public class RestUserController {
         return userServiceApi.findAll();
     }
 
+
     @GetMapping(value = "/{id}")
-    public UserDto findById(@PathVariable("id") int id) {
+    public @ResponseBody UserDto findById(@PathVariable("id") int id) {
         return userServiceApi.findById(id);
     }
 

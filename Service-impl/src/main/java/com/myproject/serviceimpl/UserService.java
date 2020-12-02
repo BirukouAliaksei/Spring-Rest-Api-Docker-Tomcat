@@ -67,10 +67,15 @@ public class UserService implements UserServiceApi {
         return userMapper.toDto(userDao.updateUser(user));
     }
 
-    @Transactional
+
     @Override
     public UserDto findById(int id) {
-        return userMapper.toDto(userDao.findUserById(id));
+        User user = userDao.findUserById(id);
+        if (user == null) {
+            throw new UserServiceException("Error");
+        } else {
+            return userMapper.toDto(userDao.findUserById(id));
+        }
     }
 
     @Transactional
@@ -144,10 +149,10 @@ public class UserService implements UserServiceApi {
 
     @Transactional
     @Override
-    public void save(UserDto entity) {
+    public UserDto save(UserDto entity) {
         User user = userMapper.toEntity(entity);
         if (user != null) {
-            userDao.saveUser(user);
+            return userMapper.toDto(userDao.saveUser(user));
         } else {
             throw new UserServiceException("User service throws null");
         }

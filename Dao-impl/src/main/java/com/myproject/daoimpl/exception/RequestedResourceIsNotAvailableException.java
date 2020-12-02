@@ -1,4 +1,4 @@
 package com.myproject.daoimpl.exception;
 
-public class RequestedResourceIsNotAvailableException {
+public class RequestedResourceIsNotAvailableException extends RuntimeException {
 }

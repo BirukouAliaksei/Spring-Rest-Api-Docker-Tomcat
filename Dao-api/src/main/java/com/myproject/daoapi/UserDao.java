@@ -11,7 +11,7 @@ public interface UserDao  {
 
     ArrayList<User> findAllUsers();
 
-    void saveUser(User entity);
+    User saveUser(User entity);
 
     void deleteUser(User entity);
 

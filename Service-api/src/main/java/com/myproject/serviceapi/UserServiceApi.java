@@ -1,6 +1,7 @@
 package com.myproject.serviceapi;
 
 import com.myproject.dto.dto.UserDto;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 
@@ -8,7 +9,7 @@ public interface UserServiceApi {
 
     ArrayList<UserDto> findAll();
 
-    void save(UserDto entity);
+    UserDto save(UserDto entity);
 
     void delete(int id);
 

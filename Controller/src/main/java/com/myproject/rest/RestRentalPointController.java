@@ -1,6 +1,5 @@
 package com.myproject.rest;
 
-import com.myproject.domain.entity.RentalPoint;
 import com.myproject.dto.dto.RentalPointDto;
 import com.myproject.dto.dto.ScooterDto;
 import com.myproject.serviceapi.RentalPointServiceApi;
@@ -31,8 +30,8 @@ public class RestRentalPointController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
-    public void create(@RequestBody RentalPointDto rentalPointDto) {
-        rentalPointServiceApi.save(rentalPointDto);
+    public RentalPointDto create(@RequestBody RentalPointDto rentalPointDto) {
+        return rentalPointServiceApi.save(rentalPointDto);
     }
 
     @PutMapping(value = "/{id}")
@@ -46,7 +45,7 @@ public class RestRentalPointController {
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public HttpStatus delete(@PathVariable("id") int id) {
-       return rentalPointServiceApi.delete(id);
+        return rentalPointServiceApi.delete(id);
     }
 
     @GetMapping

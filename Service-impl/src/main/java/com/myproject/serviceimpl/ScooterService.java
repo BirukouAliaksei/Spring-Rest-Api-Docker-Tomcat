@@ -35,14 +35,15 @@ public class ScooterService implements ScooterServiceApi {
 
 
     @Transactional
-    public  ArrayList<ScooterDto> findRentalPointScootersById(int id){
+    public ArrayList<ScooterDto> findRentalPointScootersById(int id) {
         ArrayList<ScooterDto> scooterDtos = new ArrayList<>();
         ArrayList<Scooter> all = scooterDao.findAllScooters();
         for (Scooter scooter : all) {
-            if (scooter.getRentalPointId()==id) {
+            if (scooter.getRentalPointId() == id) {
                 scooterDtos.add(scooterMapper.toDto(scooter));
             }
-        }return scooterDtos;
+        }
+        return scooterDtos;
     }
 
     @Transactional
@@ -59,10 +60,10 @@ public class ScooterService implements ScooterServiceApi {
 
     @Transactional
     @Override
-    public void save(ScooterDto entity) {
+    public ScooterDto save(ScooterDto entity) {
         Scooter scooter = scooterMapper.toEntity(entity);
         if (scooter != null) {
-            scooterDao.saveScooter(scooter);
+            return scooterMapper.toDto(scooterDao.saveScooter(scooter));
         } else {
             throw new ScooterServiceException("Scooter service throws null");
         }

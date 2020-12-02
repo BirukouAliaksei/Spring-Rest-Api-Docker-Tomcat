@@ -27,8 +27,8 @@ public class RentalPointDaoImpl extends GenericDaoImpl<RentalPoint> implements R
 
     @Transactional
     @Override
-    public void saveRentalPoint(RentalPoint entity) {
-        this.save(entity);
+    public RentalPoint saveRentalPoint(RentalPoint entity) {
+       return this.save(entity);
     }
 
     @Transactional

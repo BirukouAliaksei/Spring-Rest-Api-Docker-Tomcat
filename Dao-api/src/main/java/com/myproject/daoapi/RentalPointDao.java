@@ -11,7 +11,7 @@ public interface RentalPointDao {
 
     ArrayList<RentalPoint> findAllRentalPoints();
 
-    void saveRentalPoint(RentalPoint entity);
+    RentalPoint saveRentalPoint(RentalPoint entity);
 
     void deleteRentalPoint(RentalPoint rentalPoint);
 

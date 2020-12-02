@@ -28,8 +28,8 @@ public class ScooterDaoImpl extends GenericDaoImpl<Scooter> implements ScooterDa
 
     @Transactional
     @Override
-    public void saveScooter(Scooter entity) {
-        this.save(entity);
+    public Scooter saveScooter(Scooter entity) {
+        return this.save(entity);
     }
 
     @Transactional

@@ -40,10 +40,10 @@ public class RentalPointService implements RentalPointServiceApi {
 
     @Transactional
     @Override
-    public void save(RentalPointDto entity) {
+    public RentalPointDto save(RentalPointDto entity) {
         RentalPoint rentalPoint = rentalPointMapper.toEntity(entity);
         if (rentalPoint != null) {
-            rentalPointDao.saveRentalPoint(rentalPoint);
+            return rentalPointMapper.toDto(rentalPointDao.saveRentalPoint(rentalPoint));
         } else {
             throw new RentalPointServiceException("Rental Point service throws null");
         }
@@ -62,7 +62,6 @@ public class RentalPointService implements RentalPointServiceApi {
                 }
             }
         } else throw new RentalPointServiceException("Rentalpoint service throws null");
-
         return HttpStatus.BAD_REQUEST;
     }
 

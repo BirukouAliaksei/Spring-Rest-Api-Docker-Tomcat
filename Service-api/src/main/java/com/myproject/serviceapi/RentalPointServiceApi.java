@@ -1,5 +1,6 @@
 package com.myproject.serviceapi;
 
+import com.myproject.domain.entity.RentalPoint;
 import com.myproject.dto.dto.RentalPointDto;
 import org.springframework.http.HttpStatus;
 
@@ -9,7 +10,7 @@ public interface RentalPointServiceApi {
 
     ArrayList<RentalPointDto> findAll();
 
-    void save(RentalPointDto entity);
+    RentalPointDto save(RentalPointDto entity);
 
     HttpStatus delete(int id);
 

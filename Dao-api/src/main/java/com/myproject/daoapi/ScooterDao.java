@@ -10,7 +10,7 @@ public interface ScooterDao {
 
     ArrayList<Scooter> findAllScooters();
 
-    void saveScooter(Scooter entity);
+    Scooter saveScooter(Scooter entity);
 
     void deleteScooter(Scooter entity);
 

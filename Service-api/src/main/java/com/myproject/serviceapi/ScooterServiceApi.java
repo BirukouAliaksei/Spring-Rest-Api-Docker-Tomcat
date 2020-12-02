@@ -9,7 +9,7 @@ public interface ScooterServiceApi {
 
     ArrayList<ScooterDto> findAll();
 
-    void save(ScooterDto entity);
+    ScooterDto save(ScooterDto entity);
 
     HttpStatus delete(int id);
 

@@ -23,8 +23,8 @@ public class RestScooterController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
-    public void create(@RequestBody ScooterDto scooterDto) {
-        scooterServiceApi.save(scooterDto);
+    public ScooterDto create(@RequestBody ScooterDto scooterDto) {
+        return scooterServiceApi.save(scooterDto);
     }
 
     @PutMapping(value = "/{id}")
@@ -46,7 +46,7 @@ public class RestScooterController {
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public HttpStatus delete(@PathVariable("id") int id) {
-       return scooterServiceApi.delete(id);
+        return scooterServiceApi.delete(id);
     }
 
     @GetMapping

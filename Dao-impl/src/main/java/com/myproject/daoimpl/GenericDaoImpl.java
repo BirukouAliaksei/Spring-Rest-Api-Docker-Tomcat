@@ -2,8 +2,6 @@ package com.myproject.daoimpl;
 
 import com.myproject.daoapi.GenericDao;
 import com.myproject.daoimpl.exception.RequestedResourceIsNotAvailableException;
-import com.myproject.serviceimpl.exceptions.UserServiceException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,7 +32,7 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
         T type = (T) entityManager.find(this.type, new Integer(id));
         try {
             entityManager.detach(type);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new RequestedResourceIsNotAvailableException();
         }
         return type;

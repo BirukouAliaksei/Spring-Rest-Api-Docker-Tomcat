@@ -30,16 +30,8 @@ public class RestScooterController {
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
-    public void update(@RequestBody ScooterDto scooterDto, @PathVariable("id") int id) {
-        scooterServiceApi.update(scooterDto, id);
-    }
-
-    @PutMapping(value = "/{id}/set-price")
-    @ResponseStatus(HttpStatus.OK)
-    public String setScooterPrice(@RequestParam("cost") Double cost,
-                                  @PathVariable("id") int id) {
-        scooterServiceApi.setScooterPrice(cost, id);
-        return "scooter price is update";
+    public ScooterDto update(@RequestBody ScooterDto scooterDto, @PathVariable("id") int id) {
+       return scooterServiceApi.update(scooterDto, id);
     }
 
     @DeleteMapping(value = "/{id}")

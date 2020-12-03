@@ -18,6 +18,4 @@ public interface ScooterServiceApi {
     ScooterDto findById(int id);
 
     ArrayList<ScooterDto> findRentalPointScootersById(int id);
-
-    void setScooterPrice(Double price, int id);
 }

@@ -99,17 +99,6 @@ public class ScooterService implements ScooterServiceApi {
         return scooterMapper.toDto(scooterDao.updateScooter(scooter));
     }
 
-    @Override
-    public void setScooterPrice(Double price, int id) {
-        Scooter scooter = scooterDao.findScooterById(id);
-        scooter.setId(id);
-        scooter.setCost(price);
-        scooter.setModel(scooter.getModel());
-        scooter.setAvailability(scooter.isAvailability());
-        scooter.setBattery(scooter.getBattery());
-        scooterDao.updateScooter(scooter);
-    }
-
 
     @Override
     public ScooterDto findById(int id) {

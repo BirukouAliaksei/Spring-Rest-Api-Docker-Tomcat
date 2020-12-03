@@ -19,10 +19,4 @@ public class UserDto {
     public UserDto() {
     }
 
-//    public UserDto(String username, String email, String password, String role) {
-//        this.username = username;
-//        this.email = email;
-//        this.password = password;
-//        this.role = role;
-//    }
 }

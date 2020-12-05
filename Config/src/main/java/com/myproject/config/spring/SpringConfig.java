@@ -23,16 +23,4 @@ import javax.persistence.EntityManagerFactory;
 public class SpringConfig implements WebMvcConfigurer {
 
 
-
-//    @Autowired
-////    private ApplicationContext applicationContext;
-////
-////    @Bean
-////    public ViewResolver viewResolver() {
-////        InternalResourceViewResolver bean = new InternalResourceViewResolver();
-////        bean.setApplicationContext(applicationContext);
-////        bean.setPrefix("/WEB-INF/");
-////        bean.setSuffix(".json");
-////        return bean;
-////    }
 }

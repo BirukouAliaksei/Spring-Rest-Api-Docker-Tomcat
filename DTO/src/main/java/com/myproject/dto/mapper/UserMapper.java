@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper implements Mapper<User, UserDto> {
 
-    //FIXME check, if instance null, create new MM instance into class
     @Autowired
     private ModelMapper modelMapper;
 

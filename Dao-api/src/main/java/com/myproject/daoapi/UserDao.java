@@ -18,4 +18,6 @@ public interface UserDao  {
     User updateUser(User entity);
 
     User findUserById(int id);
+
+    User findByLogin(String login);
 }

@@ -29,7 +29,7 @@ public class HistoryDaoImpl extends GenericDaoImpl<History> implements HistoryDa
     @Transactional
     @Override
     public History saveHistory(History entity) {
-       return this.save(entity);
+        return this.save(entity);
     }
 
     @Transactional

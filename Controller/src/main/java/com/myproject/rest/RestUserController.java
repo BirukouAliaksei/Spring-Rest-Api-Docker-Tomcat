@@ -20,6 +20,7 @@ public class RestUserController {
     @Autowired
     private HistoryServiceApi historyServiceApi;
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
@@ -37,7 +38,7 @@ public class RestUserController {
     @PutMapping(value = "/{id}/history/{historyId}")
     @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
-    public HistoryDto finishTrip(@PathVariable("id") int id, @RequestBody HistoryDto historyDto,@PathVariable("historyId") int historyId) {
+    public HistoryDto finishTrip(@PathVariable("id") int id, @RequestBody HistoryDto historyDto, @PathVariable("historyId") int historyId) {
         return userServiceApi.finishTrip(id, historyDto, historyId);
     }
 
@@ -57,13 +58,14 @@ public class RestUserController {
     }
 
     @GetMapping
-//    @Secured(value = "ROLE_ADMIN")
+//    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public ArrayList<UserDto> findAll() {
         return userServiceApi.findAll();
     }
 
 
     @GetMapping(value = "/{id}")
+//    @PreAuthorize("hasRole('USER')")
     public @ResponseBody
     UserDto findById(@PathVariable("id") int id) {
         return userServiceApi.findById(id);

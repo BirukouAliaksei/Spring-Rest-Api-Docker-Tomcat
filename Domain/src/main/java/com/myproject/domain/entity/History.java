@@ -34,10 +34,8 @@ public class History {
     private int userId;
     @Column(name = "mileage")
     private Double mileade;
-    @DateTimeFormat
     @Column(name = "start_time")
     private LocalDateTime startTime;
-    @DateTimeFormat
     @Column(name = "finish_time")
     private LocalDateTime finishTime;
     @Column(name = "start_location_id")
@@ -51,6 +49,7 @@ public class History {
     @Column(name = "scooter_id")
     private int scooterId;
     @Transient
+    //FIXME final static
     private String discount = "discount";
 
     public History() {

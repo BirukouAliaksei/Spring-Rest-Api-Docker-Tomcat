@@ -16,8 +16,6 @@ public class RentalPointDto {
     private int longitude;
 
 
-//    private Scooter scooters;
-
     public RentalPointDto() {
     }
 }

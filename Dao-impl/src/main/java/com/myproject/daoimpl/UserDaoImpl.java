@@ -5,11 +5,6 @@ import com.myproject.domain.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 
 @Repository
@@ -22,6 +17,21 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Override
     public User findUserById(int id) {
         return this.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public User findByLogin(String login) {
+        User userById =null;
+//        ArrayList<User> findAllUsers = findAllUsers();
+        for (User user : findAllUsers()) {
+            if (user.getUserName().equalsIgnoreCase(login)) {
+               userById = findUserById(user.getId());
+               break;
+            }
+        }
+        return userById;
+//        return entityManager.find(User.class, login);
     }
 
     @Override
@@ -38,13 +48,13 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Transactional
     @Override
     public User saveUser(User entity) {
-       return this.save(entity);
+        return this.save(entity);
     }
 
     @Transactional
     @Override
     public void deleteUser(User entity) {
-      this.delete(entity);
+        this.delete(entity);
     }
 
     @Transactional

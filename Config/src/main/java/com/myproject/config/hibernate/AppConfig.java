@@ -55,7 +55,6 @@ public class AppConfig {
 
 
     @Bean
-//    @Qualifier(value = "entityManager")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emfb =
                 new LocalContainerEntityManagerFactoryBean();

@@ -15,6 +15,8 @@ import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,12 @@ public class UserService implements UserServiceApi {
     @Autowired
     private HistoryMapper historyMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+//    OAuth2ResourceServerConfigurer.JwtConfigurer jwtConfigurer;
+
+
     private Double offerCost = 1.0;
     private Double offerSubscription = offerCost * 5;
     private Double discount = 0.9;
@@ -67,9 +75,7 @@ public class UserService implements UserServiceApi {
         user.setUserName(newUser.getUserName());
         user.setEmail(newUser.getEmail());
         user.setPassword(newUser.getPassword());
-        if (user.getRole().equals("USER")) {
-            user.setRole("USER");
-        } else user.setRole(newUser.getRole());
+        user.setRole(newUser.getRole());
         return userMapper.toDto(userDao.updateUser(user));
     }
 
@@ -140,6 +146,28 @@ public class UserService implements UserServiceApi {
         return historyMapper.toDto(historyDao.updateHistory(history));
     }
 
+    @Override
+    public String signin(String username, String password) {
+        return null;
+    }
+
+    @Transactional
+    public User findByLogin(String login) {
+        return userDao.findByLogin(login);
+    }
+
+    @Override
+    @Transactional
+    public User findByLoginAndPassword(String login, String password) {
+        User user = userDao.findByLogin(login);
+        if (user!= null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+        }
+        return user;
+    }
+
     @Transactional
     @Override
     public HttpStatus delete(int id) {
@@ -161,6 +189,7 @@ public class UserService implements UserServiceApi {
     public UserDto save(UserDto entity) {
         User user = userMapper.toEntity(entity);
         if (user != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userMapper.toDto(userDao.saveUser(user));
         } else {
             throw new UserServiceException("User service throws null");
@@ -168,6 +197,7 @@ public class UserService implements UserServiceApi {
     }
 
     public UserDto getUserByName(String name) {
+
         if (userDao.findAllUsers() != null) {
             ArrayList<User> users = userDao.findAllUsers();
             ArrayList<UserDto> userDtos = null;

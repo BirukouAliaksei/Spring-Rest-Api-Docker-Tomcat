@@ -1,5 +1,6 @@
 package com.myproject.serviceapi;
 
+import com.myproject.domain.entity.User;
 import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.UserDto;
 import org.springframework.http.HttpStatus;
@@ -21,4 +22,10 @@ public interface UserServiceApi {
     HistoryDto startTrip(int id, HistoryDto historyDto);
 
     HistoryDto finishTrip(int id, HistoryDto historyDto, int historyId);
+
+    String signin(String username, String password);
+
+    User findByLogin(String username);
+
+    User findByLoginAndPassword(String login, String password);
 }

@@ -23,8 +23,6 @@ public interface UserServiceApi {
 
     HistoryDto finishTrip(int id, HistoryDto historyDto, int historyId);
 
-    String signin(String username, String password);
-
     User findByLogin(String username);
 
     User findByLoginAndPassword(String login, String password);

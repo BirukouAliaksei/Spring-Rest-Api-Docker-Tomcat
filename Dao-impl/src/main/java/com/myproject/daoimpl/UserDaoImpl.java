@@ -23,9 +23,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Transactional
     public User findByLogin(String login) {
         User userById =null;
-//        ArrayList<User> findAllUsers = findAllUsers();
         for (User user : findAllUsers()) {
-            if (user.getUserName().equalsIgnoreCase(login)) {
+            if (user.getUsername().equalsIgnoreCase(login)) {
                userById = findUserById(user.getId());
                break;
             }

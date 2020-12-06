@@ -35,7 +35,7 @@ class RestUserControllerTest {
     private MockMvc mockMvc;
 
     @InjectMocks
-    private RestUserController userController;
+    private UserController userController;
 
     @Mock
     private UserServiceApi userServiceApi;

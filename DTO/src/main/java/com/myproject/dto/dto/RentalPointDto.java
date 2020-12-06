@@ -6,16 +6,9 @@ import lombok.Data;
 public class RentalPointDto {
 
     private int id;
-
     private String address;
-
     private int parentId;
-
     private int latitude;
-
     private int longitude;
 
-
-    public RentalPointDto() {
-    }
 }

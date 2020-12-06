@@ -9,31 +9,16 @@ import java.time.LocalDateTime;
 public class HistoryDto {
 
     private int id;
-    //
     private int userId;
-    //
-    private Double mileade;
+    private Double mileage;
     @DateTimeFormat
     private LocalDateTime startTime;
-
     @DateTimeFormat
     private LocalDateTime finishTime;
-
     private int startLocationId;
-
     private int finishLocationId;
-    //
     private String offerType;
-    //
     private int offerCost;
-    //
     private int scooterId;
-
-//    private RentalPoint rentalPoint;
-
-//    private Scooter scooter;
-
-    public HistoryDto() {
-    }
 
 }

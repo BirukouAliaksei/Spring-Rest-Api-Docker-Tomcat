@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/rental_points")
-public class RestRentalPointController {
+public class RentalPointController {
 
     @Autowired
     private RentalPointServiceApi rentalPointServiceApi;
@@ -20,7 +20,6 @@ public class RestRentalPointController {
     @Autowired
     private ScooterServiceApi scooterServiceApi;
 
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @GetMapping(value = "/{id}/scooters")
     public ArrayList<ScooterDto> findRentalPointScootersById(@PathVariable("id") int id) {
@@ -28,28 +27,24 @@ public class RestRentalPointController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
     public RentalPointDto create(@RequestBody RentalPointDto rentalPointDto) {
         return rentalPointServiceApi.save(rentalPointDto);
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public void update(@RequestBody RentalPointDto rentalPointDto, @PathVariable("id") int id) {
         rentalPointServiceApi.update(rentalPointDto, id);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public HttpStatus delete(@PathVariable("id") int id) {
         return rentalPointServiceApi.delete(id);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public ArrayList<RentalPointDto> findAll() {
         return rentalPointServiceApi.findAll();

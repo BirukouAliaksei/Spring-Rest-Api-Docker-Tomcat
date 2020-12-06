@@ -1,5 +1,7 @@
 package com.myproject.daoimpl.exception;
 
+import com.myproject.serviceimpl.exceptions.UserServiceException;
+import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,17 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<AwesomeException> requestedResourceIsNotAvailableException() {
         return new ResponseEntity<>(new AwesomeException("The requested resource is not available"), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserServiceException.class)
+    protected ResponseEntity<AwesomeException> requestedResourceIsNotAvailableUserException() {
+        return new ResponseEntity<>(new AwesomeException("The requested resource is not available"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    protected ResponseEntity<AwesomeException> tokenIsNotAvailableUserException() {
+        return new ResponseEntity<>(new AwesomeException("WT validity cannot be asserted and should not be trusted"), HttpStatus.FORBIDDEN);
+    }
+
 
     @Data
     private static class AwesomeException {

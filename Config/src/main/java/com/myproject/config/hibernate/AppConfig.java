@@ -2,9 +2,11 @@ package com.myproject.config.hibernate;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -26,20 +28,20 @@ import static org.modelmapper.config.Configuration.AccessLevel;
 @EnableJpaRepositories
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.myproject")
-//@PropertySource(value = {"application.properties"})
+@PropertySource(value = {"classpath:application.properties"})
 public class AppConfig {
-    //    @Value("${jdbc.driverClassName}")
-    private String driverClassName = "com.mysql.jdbc.Driver";
-    //    @Value("${jdbc.url}")
-    private String jdbcURL = "jdbc:mysql://localhost:3306/scooterservice";
-    //    @Value("${jdbc.username}")
-    private String username = "root";
-    //    @Value("${jdbc.password}")
-    private String password = "qwerty123";
-    //    @Value("${jdbc.dialect}")
-    private String dialect = "hibernate.dialect";
-    //    @Value("${jdbc.dialectName}")
-    private String dialectName = "org.hibernate.dialect.MySQL5Dialect";
+    @Value("${jdbc.driverClassName}")
+    private String driverClassName;
+    @Value("${jdbc.url}")
+    private String jdbcURL;
+    @Value("${jdbc.username}")
+    private String username;
+    @Value("${jdbc.password}")
+    private String password;
+    @Value("${jdbc.dialect}")
+    private String dialect;
+    @Value("${jdbc.dialectName}")
+    private String dialectName;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

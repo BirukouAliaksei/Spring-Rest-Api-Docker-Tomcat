@@ -9,12 +9,12 @@ public class MySpringMvcDispatcherInitializer extends AbstractAnnotationConfigDi
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{AppConfig.class};
+        return new Class[]{AppConfig.class, SpringConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{SpringConfig.class};
+        return null;
     }
 
     @Override

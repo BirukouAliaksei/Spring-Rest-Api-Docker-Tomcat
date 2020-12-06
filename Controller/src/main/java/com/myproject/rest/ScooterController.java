@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/scooters")
-public class RestScooterController {
+public class ScooterController {
 
     @Autowired
     private ScooterServiceApi scooterServiceApi;
@@ -21,28 +21,25 @@ public class RestScooterController {
     private HistoryServiceApi historyServiceApi;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
 //    @Secured(value = "ROLE_ADMIN")
     public ScooterDto create(@RequestBody ScooterDto scooterDto) {
         return scooterServiceApi.save(scooterDto);
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public ScooterDto update(@RequestBody ScooterDto scooterDto, @PathVariable("id") int id) {
-       return scooterServiceApi.update(scooterDto, id);
+        return scooterServiceApi.update(scooterDto, id);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
 //    @Secured(value = "ROLE_ADMIN")
     public HttpStatus delete(@PathVariable("id") int id) {
         return scooterServiceApi.delete(id);
     }
 
     @GetMapping
-//    @Secured(value = "ROLE_ADMIN")
+//    @Secured(value = "ROLE_USER")
     public ArrayList<ScooterDto> findAll() {
         return scooterServiceApi.findAll();
     }

@@ -1,6 +1,9 @@
 package com.myproject.dto.dto;
 
+import com.myproject.domain.entity.History;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class UserDto {
@@ -15,8 +18,6 @@ public class UserDto {
 
     private String role;
 
-
-    public UserDto() {
-    }
+//    private Set<History> histories;
 
 }

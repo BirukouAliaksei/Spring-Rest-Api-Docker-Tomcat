@@ -15,7 +15,6 @@ import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,14 +68,9 @@ public class UserService implements UserServiceApi {
     @Transactional
     @Override
     public UserDto update(UserDto entity, int id) {
+        findById(id);
         User newUser = userMapper.toEntity(entity);
-        User user = userDao.findUserById(id);
-        user.setId(id);
-        user.setUserName(newUser.getUserName());
-        user.setEmail(newUser.getEmail());
-        user.setPassword(newUser.getPassword());
-        user.setRole(newUser.getRole());
-        return userMapper.toDto(userDao.updateUser(user));
+        return userMapper.toDto(userDao.updateUser(newUser));
     }
 
 
@@ -113,7 +107,7 @@ public class UserService implements UserServiceApi {
             }
         }
         history.setUserId(id);
-        history.setMileade(0.0);
+        history.setMileage(0.0);
         history.setOfferCost(0.0);
         history.setOfferType(history.getOfferType());
         history.setStartLocationId(scooter.getRentalPointId());
@@ -131,7 +125,7 @@ public class UserService implements UserServiceApi {
         History newHistory = historyMapper.toEntity(historyDto);
         History history = historyDao.findHistoryById(historyId);
         history.setUserId(id);
-        history.setMileade(newHistory.getMileade());
+        history.setMileage(newHistory.getMileage());
         history.setOfferCost(offerCost);
         history.setOfferType(history.getOfferType());
         history.setStartLocationId(history.getStartLocationId());
@@ -139,16 +133,10 @@ public class UserService implements UserServiceApi {
         history.setStartTime(history.getStartTime());
         history.setFinishTime(LocalDateTime.now());
         history.setScooterId(history.getScooterId());
-
         Scooter scooter = scooterDao.findScooterById(history.getScooterId());
         scooter.setRentalPointId(newHistory.getFinishLocationId());
         scooterDao.updateScooter(scooter);
         return historyMapper.toDto(historyDao.updateHistory(history));
-    }
-
-    @Override
-    public String signin(String username, String password) {
-        return null;
     }
 
     @Transactional
@@ -160,11 +148,12 @@ public class UserService implements UserServiceApi {
     @Transactional
     public User findByLoginAndPassword(String login, String password) {
         User user = userDao.findByLogin(login);
-        if (user!= null) {
+        if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
         }
+        //FIXME throw exception
         return user;
     }
 
@@ -194,20 +183,6 @@ public class UserService implements UserServiceApi {
         } else {
             throw new UserServiceException("User service throws null");
         }
-    }
-
-    public UserDto getUserByName(String name) {
-
-        if (userDao.findAllUsers() != null) {
-            ArrayList<User> users = userDao.findAllUsers();
-            ArrayList<UserDto> userDtos = null;
-            for (User user : users) {
-                if (user.getUserName().equals(name)) {
-                    userDtos.add(userMapper.toDto(user));
-                }
-            }
-            return userDtos.get(0);
-        } else throw new UserServiceException("User service throws null");
     }
 
 }

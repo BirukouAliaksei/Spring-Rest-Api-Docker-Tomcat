@@ -40,8 +40,8 @@ class UserServiceTest {
     @BeforeEach
     public void createMocks() {
         MockitoAnnotations.initMocks(this);
-        all.add(new User(0, "Aleks", "pppp", "pppp", Role.USER.toString()));
-        all.add(new User(1, "Aleksa", "pp@", "pppp", Role.USER.toString()));
+//        all.add(new User(0, "Aleks", "pppp", "pppp", Role.USER.toString()));
+//        all.add(new User(1, "Aleksa", "pp@", "pppp", Role.USER.toString()));
 //
 //        allUserDto.add(new UserDto(1,"Aleks", "pppp", "pppp", Role.USER.toString()));
 //        allUserDto.add(new UserDto(1,"Aleksa", "pp@", "pppp", Role.USER.toString()));
@@ -66,7 +66,7 @@ class UserServiceTest {
 
     @Test
     void save() {
-        user = new User(3, "Ale", "pp", "pppp", Role.USER.toString());
+//        user = new User(3, "Ale", "pp", "pppp", Role.USER.toString());
         userService.save(userDto);
         verify(userDao, times(1)).saveUser(user);
     }

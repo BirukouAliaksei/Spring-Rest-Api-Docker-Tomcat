@@ -23,7 +23,7 @@ public class UserController {
 
 
     @PostMapping
-//    @Secured(value = "ROLE_ADMIN")
+    @Secured(value = "ROLE_ADMIN")
     public UserDto create(@RequestBody UserDto userDto) {
         return userServiceApi.save(userDto);
     }
@@ -50,11 +50,13 @@ public class UserController {
     @GetMapping(value = "/{id}")
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public @ResponseBody
-    UserDto findById(@PathVariable("id") int id) {
-        return userServiceApi.findById(id);
+    ArrayList<UserDto> findById(@PathVariable("id") int id) {
+        return userServiceApi.findByIdWithHistory(id);
     }
 
+
     @GetMapping(value = "/{id}/history")
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public ArrayList<HistoryDto> findHistoryById(@PathVariable("id") int id) {
         return historyServiceApi.findHistoryByUserId(id);
     }

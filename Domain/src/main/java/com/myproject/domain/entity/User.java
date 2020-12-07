@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<History> histories;
 
     @Id

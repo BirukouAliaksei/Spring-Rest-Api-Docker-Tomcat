@@ -53,7 +53,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-
             Jws<Claims> claimsJws = Jwts.parser()
                     .setSigningKey(SECRET)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));

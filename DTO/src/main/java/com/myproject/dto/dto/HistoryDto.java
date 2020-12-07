@@ -1,5 +1,6 @@
 package com.myproject.dto.dto;
 
+import com.myproject.domain.entity.User;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,5 +21,6 @@ public class HistoryDto {
     private String offerType;
     private int offerCost;
     private int scooterId;
+
 
 }

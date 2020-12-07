@@ -68,19 +68,32 @@ public class UserService implements UserServiceApi {
     @Transactional
     @Override
     public UserDto update(UserDto entity, int id) {
-        findById(id);
+        User user = findById(id);
         User newUser = userMapper.toEntity(entity);
         return userMapper.toDto(userDao.updateUser(newUser));
     }
 
 
     @Override
-    public UserDto findById(int id) {
+    public User findById(int id) {
         User user = userDao.findUserById(id);
-        if (user == null) {
-            throw new UserServiceException("Error");
+        if (user != null) {
+            return user;
         } else {
-            return userMapper.toDto(user);
+            throw new UserServiceException("Error");
+        }
+    }
+
+
+    @Override
+    public ArrayList<UserDto> findByIdWithHistory(int id) {
+        User user = userDao.findUserById(id);
+        if (user != null) {
+            ArrayList<UserDto> userDtos = new ArrayList<>();
+            userDtos.add(userMapper.toDto(user));
+            return userDtos;
+        } else {
+            throw new UserServiceException("Error");
         }
     }
 
@@ -115,8 +128,9 @@ public class UserService implements UserServiceApi {
         history.setScooterId(history.getScooterId());
         history.setStartTime(LocalDateTime.now());
         history.setFinishTime(LocalDateTime.now());
+        historyDao.saveHistory(history);
 
-        return historyMapper.toDto(historyDao.saveHistory(history));
+        return historyMapper.toDto(historyDao.findHistoryById(history.getId()));
     }
 
     @Transactional
@@ -156,6 +170,7 @@ public class UserService implements UserServiceApi {
         //FIXME throw exception
         return user;
     }
+
 
     @Transactional
     @Override

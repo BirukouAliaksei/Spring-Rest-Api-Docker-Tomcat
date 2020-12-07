@@ -1,18 +1,13 @@
 package com.myproject.config.security;
 
-import com.auth0.jwt.interfaces.Claim;
-import com.myproject.domain.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.var;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import static com.myproject.config.security.SecurityConstants.SECRET;
 

@@ -17,7 +17,7 @@ public interface UserServiceApi {
 
     UserDto update(UserDto entity, int id);
 
-    UserDto findById(int id);
+    User findById(int id);
 
     HistoryDto startTrip(int id, HistoryDto historyDto);
 
@@ -26,4 +26,6 @@ public interface UserServiceApi {
     User findByLogin(String username);
 
     User findByLoginAndPassword(String login, String password);
+
+    ArrayList<UserDto> findByIdWithHistory(int id);
 }

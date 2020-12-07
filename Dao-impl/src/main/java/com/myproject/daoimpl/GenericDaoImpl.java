@@ -29,15 +29,12 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
 
     public T findById(int id) {
-
         try {
             T type = (T) entityManager.find(this.type, new Integer(id));
             return type;
-//            entityManager.detach(type);
         } catch (NullPointerException e) {
             throw new RequestedResourceIsNotAvailableException();
         }
-//        return type;
     }
 
 

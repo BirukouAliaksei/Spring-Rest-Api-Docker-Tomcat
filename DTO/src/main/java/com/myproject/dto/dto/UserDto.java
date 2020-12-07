@@ -18,6 +18,6 @@ public class UserDto {
 
     private String role;
 
-//    private Set<History> histories;
+    private Set<History> histories;
 
 }

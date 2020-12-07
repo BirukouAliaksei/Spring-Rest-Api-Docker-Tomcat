@@ -1,8 +1,7 @@
 package com.myproject.daoimpl.exception;
 
+import com.myproject.config.exception.MyJwtException;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
-import io.jsonwebtoken.JwtException;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +22,9 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new AwesomeException("The requested resource is not available"), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(JwtException.class)
+    @ExceptionHandler(MyJwtException.class)
     protected ResponseEntity<AwesomeException> tokenIsNotAvailableUserException() {
-        return new ResponseEntity<>(new AwesomeException("WT validity cannot be asserted and should not be trusted"), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new AwesomeException("JWT validity cannot be asserted and should not be trusted"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

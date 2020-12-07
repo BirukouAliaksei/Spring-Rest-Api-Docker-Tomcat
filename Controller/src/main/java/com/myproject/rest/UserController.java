@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    @Secured(value = "ROLE_USER")
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public @ResponseBody
     UserDto findById(@PathVariable("id") int id) {
         return userServiceApi.findById(id);

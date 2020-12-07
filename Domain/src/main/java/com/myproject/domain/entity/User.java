@@ -1,5 +1,6 @@
 package com.myproject.domain.entity;
 
+import com.myproject.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,7 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "role")
-//    @Enumerated(value = EnumType.STRING)
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
 }

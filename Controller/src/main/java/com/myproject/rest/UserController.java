@@ -34,11 +34,12 @@ public class UserController {
         return userServiceApi.update(userDto, id);
     }
 
-    //FIXME Change return method
+
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
-    public HttpStatus deleteById(@PathVariable("id") int id) {
-        return userServiceApi.delete(id);
+    public String deleteById(@PathVariable("id") int id) {
+        userServiceApi.delete(id);
+        return "User deleted";
     }
 
     @GetMapping

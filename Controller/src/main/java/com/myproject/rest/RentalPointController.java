@@ -5,7 +5,6 @@ import com.myproject.dto.dto.ScooterDto;
 import com.myproject.serviceapi.RentalPointServiceApi;
 import com.myproject.serviceapi.ScooterServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +41,9 @@ public class RentalPointController {
 
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
-    public HttpStatus delete(@PathVariable("id") int id) {
-        return rentalPointServiceApi.delete(id);
+    public String delete(@PathVariable("id") int id) {
+        rentalPointServiceApi.delete(id);
+        return "Rental point deleted";
     }
 
     @GetMapping

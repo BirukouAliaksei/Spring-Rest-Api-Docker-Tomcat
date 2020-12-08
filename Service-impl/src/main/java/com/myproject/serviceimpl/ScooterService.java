@@ -9,14 +9,17 @@ import com.myproject.dto.dto.ScooterDto;
 import com.myproject.dto.mapper.ScooterMapper;
 import com.myproject.serviceapi.ScooterServiceApi;
 import com.myproject.serviceimpl.exceptions.ScooterServiceException;
+import com.myproject.serviceimpl.exceptions.ServiceValidationException;
+import com.myproject.serviceimpl.exceptions.UserServiceException;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
 @Service
+@Log4j
 public class ScooterService implements ScooterServiceApi {
 
     public ScooterService() {
@@ -62,44 +65,50 @@ public class ScooterService implements ScooterServiceApi {
     @Transactional
     @Override
     public ScooterDto save(ScooterDto entity) {
-        Scooter scooter = scooterMapper.toEntity(entity);
-        if (scooter == null || scooter.getModel() == null ||
-                scooter.getCost() == null || scooter.getRentalPointId() == 0
-                || scooter.isAvailability() == Boolean.parseBoolean(null)) {
-            throw new ScooterServiceException("Scooter service throws null");
+        if (entity == null || entity.getModel() == null
+                || entity.getCost() == null || entity.getRentalPointId() == 0
+                || entity.isAvailability() == Boolean.parseBoolean(null)) {
+            log.info("not valid data");
+            throw new ServiceValidationException();
         } else {
+            Scooter scooter = scooterMapper.toEntity(entity);
             return scooterMapper.toDto(scooterDao.saveScooter(scooter));
         }
     }
 
     @Transactional
     @Override
-    public HttpStatus delete(int id) {
-        ArrayList<Scooter> scooters;
-        if (scooterDao.findAllScooters() != null) {
-            scooters = scooterDao.findAllScooters();
-            for (Scooter scooter : scooters) {
+    public void delete(int id) {
+        if (scooterDao.findAllScooters() == null) {
+            throw new UserServiceException("");
+        } else {
+            for (Scooter scooter : scooterDao.findAllScooters()) {
                 if (scooter.getId() == id) {
                     scooterDao.deleteScooter(scooter);
-                    return HttpStatus.OK;
+                }else {
+                    throw new ServiceValidationException();
                 }
             }
-        } else throw new ScooterServiceException("Scooter service throws null");
-
-        return HttpStatus.BAD_REQUEST;
+        }
     }
 
     @Transactional
     @Override
     public ScooterDto update(ScooterDto entity, int id) {
-        Scooter newScooter = scooterMapper.toEntity(entity);
-        Scooter scooter = scooterDao.findScooterById(id);
-        scooter.setId(id);
-        scooter.setCost(newScooter.getCost());
-        scooter.setModel(newScooter.getModel());
-        scooter.setAvailability(newScooter.isAvailability());
-        scooter.setBattery(newScooter.getBattery());
-        return scooterMapper.toDto(scooterDao.updateScooter(scooter));
+        if (entity == null || entity.getModel() == null ||
+                entity.getCost() == null || entity.getRentalPointId() == 0
+                || entity.isAvailability() == Boolean.parseBoolean(null)) {
+            throw new ServiceValidationException();
+        } else {
+            Scooter newScooter = scooterMapper.toEntity(entity);
+            Scooter scooter = scooterDao.findScooterById(id);
+            scooter.setId(id);
+            scooter.setCost(newScooter.getCost());
+            scooter.setModel(newScooter.getModel());
+            scooter.setAvailability(newScooter.isAvailability());
+            scooter.setBattery(newScooter.getBattery());
+            return scooterMapper.toDto(scooterDao.updateScooter(scooter));
+        }
     }
 
 

@@ -13,9 +13,9 @@ import com.myproject.dto.dto.UserDto;
 import com.myproject.dto.mapper.HistoryMapper;
 import com.myproject.dto.mapper.UserMapper;
 import com.myproject.serviceapi.UserServiceApi;
+import com.myproject.serviceimpl.exceptions.ServiceValidationException;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -102,57 +102,66 @@ public class UserService implements UserServiceApi {
     @Transactional
     @Override
     public HistoryDto startTrip(int id, HistoryDto historyDto) {
-        History history = historyMapper.toEntity(historyDto);
-        Scooter scooter = scooterDao.findScooterById(history.getScooterId());
-        String scooterDiscount = history.getDiscount();
-        if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())) {
-            if (history.getDiscount().equals(scooterDiscount)) {
-                offerCost = scooter.getCost() * 10 * discount;
-            } else {
-                offerCost = scooter.getCost() * 10;
+        if (id == 0 || historyDto.getStartLocationId() == 0 || historyDto.getOfferType() == null
+                || historyDto.getScooterId() == 0) {
+            throw new ServiceValidationException();
+        } else {
+            History history = historyMapper.toEntity(historyDto);
+            Scooter scooter = scooterDao.findScooterById(history.getScooterId());
+            String scooterDiscount = history.getDiscount();
+            if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())) {
+                if (history.getDiscount().equals(scooterDiscount)) {
+                    offerCost = scooter.getCost() * 10 * discount;
+                } else {
+                    offerCost = scooter.getCost() * 10;
+                }
             }
-        }
-        offerCost = scooter.getCost() * 10 * discount;
+            offerCost = scooter.getCost() * 10 * discount;
 
-        if (history.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
-            if (history.getDiscount().equals(scooterDiscount)) {
-                offerCost = scooter.getCost() * discount;
-            } else {
-                offerCost = scooter.getCost();
+            if (history.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
+                if (history.getDiscount().equals(scooterDiscount)) {
+                    offerCost = scooter.getCost() * discount;
+                } else {
+                    offerCost = scooter.getCost();
+                }
             }
+            history.setUserId(id);
+            history.setMileage(0.0);
+            history.setOfferCost(0.0);
+            history.setOfferType(history.getOfferType());
+            history.setStartLocationId(scooter.getRentalPointId());
+            history.setFinishLocationId(0);
+            history.setScooterId(history.getScooterId());
+            history.setStartTime(LocalDateTime.now());
+            history.setFinishTime(LocalDateTime.now());
+            historyDao.saveHistory(history);
+            return historyMapper.toDto(historyDao.findHistoryById(history.getId()));
         }
-        history.setUserId(id);
-        history.setMileage(0.0);
-        history.setOfferCost(0.0);
-        history.setOfferType(history.getOfferType());
-        history.setStartLocationId(scooter.getRentalPointId());
-        history.setFinishLocationId(0);
-        history.setScooterId(history.getScooterId());
-        history.setStartTime(LocalDateTime.now());
-        history.setFinishTime(LocalDateTime.now());
-        historyDao.saveHistory(history);
-
-        return historyMapper.toDto(historyDao.findHistoryById(history.getId()));
     }
 
     @Transactional
     @Override
     public HistoryDto finishTrip(int id, HistoryDto historyDto, int historyId) {
-        History newHistory = historyMapper.toEntity(historyDto);
-        History history = historyDao.findHistoryById(historyId);
-        history.setUserId(id);
-        history.setMileage(newHistory.getMileage());
-        history.setOfferCost(offerCost);
-        history.setOfferType(history.getOfferType());
-        history.setStartLocationId(history.getStartLocationId());
-        history.setFinishLocationId(newHistory.getFinishLocationId());
-        history.setStartTime(history.getStartTime());
-        history.setFinishTime(LocalDateTime.now());
-        history.setScooterId(history.getScooterId());
-        Scooter scooter = scooterDao.findScooterById(history.getScooterId());
-        scooter.setRentalPointId(newHistory.getFinishLocationId());
-        scooterDao.updateScooter(scooter);
-        return historyMapper.toDto(historyDao.updateHistory(history));
+        if (id == 0 || historyDto.getFinishLocationId() == Integer.parseInt(null)
+                || historyDto.getMileage() == null || historyId == 0) {
+            throw new ServiceValidationException();
+        } else {
+            History newHistory = historyMapper.toEntity(historyDto);
+            History history = historyDao.findHistoryById(historyId);
+            history.setUserId(id);
+            history.setMileage(newHistory.getMileage());
+            history.setOfferCost(offerCost);
+            history.setOfferType(history.getOfferType());
+            history.setStartLocationId(history.getStartLocationId());
+            history.setFinishLocationId(newHistory.getFinishLocationId());
+            history.setStartTime(history.getStartTime());
+            history.setFinishTime(LocalDateTime.now());
+            history.setScooterId(history.getScooterId());
+            Scooter scooter = scooterDao.findScooterById(history.getScooterId());
+            scooter.setRentalPointId(newHistory.getFinishLocationId());
+            scooterDao.updateScooter(scooter);
+            return historyMapper.toDto(historyDao.updateHistory(history));
+        }
     }
 
     @Transactional
@@ -175,18 +184,18 @@ public class UserService implements UserServiceApi {
 
     @Transactional
     @Override
-    public HttpStatus delete(int id) {
-        ArrayList<User> users;
-        if (userDao.findAllUsers() != null) {
-            users = userDao.findAllUsers();
-            for (User user : users) {
+    public void delete(int id) {
+        if (userDao.findAllUsers() == null) {
+            throw new UserServiceException("Users not found");
+        } else {
+            for (User user : userDao.findAllUsers()) {
                 if (user.getId() == id) {
                     userDao.deleteUser(user);
-                    return HttpStatus.OK;
+                }else {
+                    throw new ServiceValidationException();
                 }
             }
-        } else throw new UserServiceException("User service throws null");
-        return HttpStatus.BAD_REQUEST;
+        }
     }
 
     @Transactional

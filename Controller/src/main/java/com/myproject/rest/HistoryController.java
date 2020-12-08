@@ -22,13 +22,6 @@ public class HistoryController {
     }
 
 
-    @PutMapping(value = "/")
-    @Secured(value = "ROLE_ADMIN")
-    public void update(@RequestBody HistoryDto historyDto) {
-        historyServiceApi.update(historyDto);
-    }
-
-
     @GetMapping
     @Secured(value = "ROLE_ADMIN")
     public ArrayList<HistoryDto> findAll() {

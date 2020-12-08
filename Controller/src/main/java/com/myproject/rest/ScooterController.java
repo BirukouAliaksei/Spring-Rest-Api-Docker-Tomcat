@@ -36,8 +36,9 @@ public class ScooterController {
 
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
-    public HttpStatus delete(@PathVariable("id") int id) {
-        return scooterServiceApi.delete(id);
+    public String delete(@PathVariable("id") int id) {
+        scooterServiceApi.delete(id);
+        return "Scooter deleted";
     }
 
     @GetMapping

@@ -13,7 +13,7 @@ public interface UserServiceApi {
 
     UserDto save(UserDto entity);
 
-    HttpStatus delete(int id);
+    void delete(int id);
 
     UserDto update(UserDto entity, int id);
 

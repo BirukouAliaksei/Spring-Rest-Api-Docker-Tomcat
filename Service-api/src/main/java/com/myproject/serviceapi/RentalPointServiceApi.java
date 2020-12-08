@@ -11,7 +11,7 @@ public interface RentalPointServiceApi {
 
     RentalPointDto save(RentalPointDto entity);
 
-    HttpStatus delete(int id);
+    void delete(int id);
 
     RentalPointDto update(RentalPointDto entity, int id);
 

@@ -12,7 +12,7 @@ public interface ScooterServiceApi {
 
     ScooterDto save(ScooterDto entity);
 
-    HttpStatus delete(int id);
+    void delete(int id);
 
     ScooterDto update(ScooterDto entity, int id);
 

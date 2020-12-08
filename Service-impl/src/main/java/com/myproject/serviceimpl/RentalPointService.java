@@ -6,8 +6,8 @@ import com.myproject.dto.dto.RentalPointDto;
 import com.myproject.dto.mapper.RentalPointMapper;
 import com.myproject.serviceapi.RentalPointServiceApi;
 import com.myproject.serviceimpl.exceptions.RentalPointServiceException;
+import com.myproject.serviceimpl.exceptions.ServiceValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,48 +41,54 @@ public class RentalPointService implements RentalPointServiceApi {
     @Transactional
     @Override
     public RentalPointDto save(RentalPointDto entity) {
-        RentalPoint rentalPoint = rentalPointMapper.toEntity(entity);
-        if (rentalPoint != null) {
-            return rentalPointMapper.toDto(rentalPointDao.saveRentalPoint(rentalPoint));
+        if (entity == null || entity.getAddress() == null || entity.getParentId() == Integer.parseInt(null)
+                || entity.getLatitude() == 0 || entity.getLongitude() == 0) {
+            throw new ServiceValidationException();
         } else {
-            throw new RentalPointServiceException("Rental Point service throws null");
+            RentalPoint rentalPoint = rentalPointMapper.toEntity(entity);
+            return rentalPointMapper.toDto(rentalPointDao.saveRentalPoint(rentalPoint));
         }
     }
 
     @Transactional
     @Override
-    public HttpStatus delete(int id) {
-        ArrayList<RentalPoint> rentalPoints;
-        if (rentalPointDao.findAllRentalPoints() != null) {
-            rentalPoints = rentalPointDao.findAllRentalPoints();
-            for (RentalPoint rentalPoint : rentalPoints) {
+    public void delete(int id) {
+        if (rentalPointDao.findAllRentalPoints() == null) {
+            throw new RentalPointServiceException("");
+        } else {
+            for (RentalPoint rentalPoint : rentalPointDao.findAllRentalPoints()) {
                 if (rentalPoint.getId() == id) {
                     rentalPointDao.deleteRentalPoint(rentalPoint);
-                    return HttpStatus.OK;
+                }else {
+                    throw new ServiceValidationException();
                 }
             }
-        } else throw new RentalPointServiceException("Rentalpoint service throws null");
-        return HttpStatus.BAD_REQUEST;
+        }
     }
 
     @Transactional
     @Override
     public RentalPointDto update(RentalPointDto entity, int id) {
-        RentalPoint newRentalPoint = rentalPointMapper.toEntity(entity);
-        RentalPoint rentalPoint = rentalPointDao.findRentalPointById(id);
-        rentalPoint.setId(id);
-        rentalPoint.setAddress(newRentalPoint.getAddress());
-        rentalPoint.setParentId(newRentalPoint.getParentId());
-        rentalPoint.setLatitude(newRentalPoint.getLatitude());
-        rentalPoint.setLongitude(newRentalPoint.getLongitude());
-        return rentalPointMapper.toDto(rentalPointDao.updateRentalPoint(rentalPoint));
+        if (entity == null || entity.getAddress() == null || entity.getParentId() == Integer.parseInt(null)
+                || entity.getLatitude() == 0 || entity.getLongitude() == 0) {
+            throw new ServiceValidationException();
+        } else {
+            RentalPoint newRentalPoint = rentalPointMapper.toEntity(entity);
+            RentalPoint rentalPoint = rentalPointDao.findRentalPointById(id);
+            rentalPoint.setId(id);
+            rentalPoint.setAddress(newRentalPoint.getAddress());
+            rentalPoint.setParentId(newRentalPoint.getParentId());
+            rentalPoint.setLatitude(newRentalPoint.getLatitude());
+            rentalPoint.setLongitude(newRentalPoint.getLongitude());
+            return rentalPointMapper.toDto(rentalPointDao.updateRentalPoint(rentalPoint));
+        }
     }
 
     @Override
     public RentalPointDto rentalPointInfoById(int id) {
         RentalPoint rentalPoint = rentalPointDao.findRentalPointById(id);
         if (rentalPoint == null) {
-            throw new RentalPointServiceException("Rentall point service throw null");
+            throw new RentalPointServiceException("Rental point service throw null");
         } else {
             return rentalPointMapper.toDto(rentalPoint);
         }

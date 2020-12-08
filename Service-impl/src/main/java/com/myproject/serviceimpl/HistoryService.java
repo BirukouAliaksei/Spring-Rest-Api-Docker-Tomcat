@@ -36,71 +36,10 @@ public class HistoryService implements HistoryServiceApi {
         } else throw new HistoryServiceException("History service throws null");
     }
 
-    @Transactional
-    @Override
-    public void save(HistoryDto entity) {
-        History history = historyMapper.toEntity(entity);
-        if (history != null) {
-            historyDaoApi.saveHistory(history);
-        } else {
-            throw new HistoryServiceException("History service throws null");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void delete(int id) {
-        ArrayList<History> histories;
-        if (historyDaoApi.findAllHistory() != null) {
-            histories = historyDaoApi.findAllHistory();
-            for (History history : histories) {
-                if (history.getId() == id) {
-                    historyDaoApi.deleteHistory(history);
-                }
-            }
-        } else throw new HistoryServiceException("History service throws null");
-
-    }
-
-    @Transactional
-    @Override
-    public HistoryDto update(HistoryDto entity) {
-        return null;
-    }
-
 
     @Override
     public HistoryDto findById(int id) {
         return historyMapper.toDto(historyDaoApi.findHistoryById(id));
     }
-
-//    @Transactional
-//    @Override
-//    public ArrayList<HistoryDto> findHistoryByUserId(int id) {
-//        ArrayList<HistoryDto> idList = new ArrayList<>();
-//        ArrayList<History> histories = historyDaoApi.findAllHistory();
-//        if (histories != null) {
-//            for (History history : histories) {
-//                if (history.getUserId() == id) {
-//                    idList.add(historyMapper.toDto(history));
-//                }
-//            }
-//            return idList;
-//        } else throw new HistoryServiceException("History service throws null");
-//    }
-
-//    @Transactional
-//    @Override
-//    public ArrayList<HistoryDto> findScooterHistoryById(int id) {
-//        ArrayList<HistoryDto> idList = new ArrayList<>();
-//        if (historyDaoApi.findAllHistory() != null) {
-//            for (History history : historyDaoApi.findAllHistory()) {
-//                if (history.getScooterId() == id) {
-//                    idList.add(historyMapper.toDto(history));
-//                }
-//            }
-//        } else throw new HistoryServiceException("History service exception");
-//        return idList;
-//    }
 
 }

@@ -3,6 +3,7 @@ package com.myproject.daoimpl.exception;
 import com.myproject.config.exception.MyJwtException;
 import com.myproject.serviceimpl.exceptions.RentalPointServiceException;
 import com.myproject.serviceimpl.exceptions.ScooterServiceException;
+import com.myproject.serviceimpl.exceptions.ServiceValidationException;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,11 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new AwesomeException("User not found, check login and password"), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ServiceValidationException.class)
+    protected ResponseEntity<DetailsAwesomeException> validationException() {
+        return new ResponseEntity<>(new DetailsAwesomeException("Please, input valid data", HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
 
     @Data
     private static class AwesomeException {
@@ -52,6 +58,17 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
         public AwesomeException(String s) {
             message = s;
+        }
+    }
+
+    @Data
+    private static class DetailsAwesomeException {
+        private String message;
+        private int code;
+
+        public DetailsAwesomeException(String s, int status) {
+            message = s;
+            code = status;
         }
     }
 }

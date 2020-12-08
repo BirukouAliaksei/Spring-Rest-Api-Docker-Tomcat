@@ -6,8 +6,6 @@ public interface GenericDao<T> {
 
     T findById(int id);
 
-//    ArrayList<T> findAll(List<String> allParams);
-
     ArrayList<T> findAll();
 
     T save(T entity);

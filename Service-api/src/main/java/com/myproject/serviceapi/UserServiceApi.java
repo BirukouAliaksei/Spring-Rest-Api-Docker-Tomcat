@@ -28,4 +28,6 @@ public interface UserServiceApi {
     User findByLoginAndPassword(String login, String password);
 
     ArrayList<UserDto> findByIdWithHistory(int id);
+
+    UserDto userRegistration(UserDto userDto);
 }

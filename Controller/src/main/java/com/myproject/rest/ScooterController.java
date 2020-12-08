@@ -1,6 +1,7 @@
 package com.myproject.rest;
 
 import com.myproject.dto.dto.HistoryDto;
+import com.myproject.dto.dto.ScooterAdminDto;
 import com.myproject.dto.dto.ScooterDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.ScooterServiceApi;
@@ -52,8 +53,14 @@ public class ScooterController {
     }
 
     @GetMapping(value = "/{id}/history")
-    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-    public ArrayList<HistoryDto> findScooterHistoryById(@PathVariable("id") int id) {
-        return historyServiceApi.findScooterHistoryById(id);
+    @Secured(value = "ROLE_ADMIN")
+    public ScooterAdminDto findScooterById(@PathVariable("id") int id) {
+        return scooterServiceApi.findScooterById(id);
     }
+
+//    @GetMapping(value = "/{id}/history")
+//    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+//    public ArrayList<HistoryDto> findScooterHistoryById(@PathVariable("id") int id) {
+//        return historyServiceApi.findScooterHistoryById(id);
+//    }
 }

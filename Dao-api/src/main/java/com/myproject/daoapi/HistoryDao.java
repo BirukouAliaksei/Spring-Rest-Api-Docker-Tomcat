@@ -1,9 +1,7 @@
 package com.myproject.daoapi;
 
 import com.myproject.domain.entity.History;
-import com.myproject.domain.entity.Scooter;
 
-import javax.servlet.http.HttpServlet;
 import java.util.ArrayList;
 
 public interface HistoryDao {

@@ -23,6 +23,11 @@ public class History {
     @JsonIgnore
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "scooter_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private Scooter scooter;
+
     @Id
     private int id;
     @Column(name = "user_id")

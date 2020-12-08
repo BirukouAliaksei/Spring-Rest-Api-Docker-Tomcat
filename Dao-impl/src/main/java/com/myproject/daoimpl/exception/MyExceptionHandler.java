@@ -7,6 +7,7 @@ import com.myproject.serviceimpl.exceptions.UserServiceException;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -26,7 +27,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(MyJwtException.class)
     protected ResponseEntity<AwesomeException> tokenIsNotAvailableUserException() {
-        return new ResponseEntity<>(new AwesomeException("JWT validity cannot be asserted and should not be trusted"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new AwesomeException("JWT validity cannot be asserted and should not be trusted"), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ScooterServiceException.class)
@@ -37,6 +38,11 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RentalPointServiceException.class)
     protected ResponseEntity<AwesomeException> tokenIsNotAvailableRentalPointsException() {
         return new ResponseEntity<>(new AwesomeException("The requested resource is not available"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    protected ResponseEntity<AwesomeException> UserNotFoundException() {
+        return new ResponseEntity<>(new AwesomeException("User not found, check login and password"), HttpStatus.BAD_REQUEST);
     }
 
 

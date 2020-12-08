@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.myproject.dto.dto.UserDto;
+import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.UserServiceApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -30,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 //@AutoConfigureMockMvc
-class RestUserControllerTest {
+class UserControllerTest {
 
     private MockMvc mockMvc;
 
@@ -40,8 +42,9 @@ class RestUserControllerTest {
     @Mock
     private UserServiceApi userServiceApi;
 
+    @Mock
+    private HistoryServiceApi historyServiceApi;
 
-    private JacksonTester<UserDto> jsonBookDto;
 
     String createJson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -60,28 +63,28 @@ class RestUserControllerTest {
 
     @Test
     void create() throws Exception {
-        mockMvc.perform(post("/app/user/registration")
+        mockMvc.perform(post("/users")
                 .content(createJson())
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     void update() throws Exception{
-        mockMvc.perform(put("/app/user/update")
+        mockMvc.perform(put("/users/{id}",1)
                 .content(createJson())
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     void delete() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.delete("/app/user/{id}", "1")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/{id}", "1")
                 .content(createJson())
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     void findAll() throws Exception {
-        mockMvc.perform(get("/app/user/")).andExpect(status().isOk());
+        mockMvc.perform(get("/users")).andExpect(status().isOk());
     }
 
     @Test
@@ -92,7 +95,7 @@ class RestUserControllerTest {
         given(userServiceApi.findAll()).
                 willReturn(userDtos);
 
-        mockMvc.perform(get("/app/user/{id}", 0)
+        mockMvc.perform(get("/users/{id}", 0)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

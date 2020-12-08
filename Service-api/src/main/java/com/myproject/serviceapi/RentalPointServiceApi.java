@@ -1,6 +1,5 @@
 package com.myproject.serviceapi;
 
-import com.myproject.domain.entity.RentalPoint;
 import com.myproject.dto.dto.RentalPointDto;
 import org.springframework.http.HttpStatus;
 

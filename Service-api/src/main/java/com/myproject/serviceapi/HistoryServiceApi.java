@@ -16,7 +16,7 @@ public interface HistoryServiceApi {
 
     HistoryDto findById(int id);
 
-    ArrayList<HistoryDto> findHistoryByUserId(int id);
+//    ArrayList<HistoryDto> findHistoryByUserId(int id);
 
-    ArrayList<HistoryDto> findScooterHistoryById(int id);
+//    ArrayList<HistoryDto> findScooterHistoryById(int id);
 }

@@ -1,10 +1,13 @@
 package com.myproject.config.security;
 
+import com.myproject.config.exception.MyJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,9 +31,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         super(authManager);
     }
 
-    @Autowired
-    @Qualifier("customUserDetailsService")
-    private CustomUserDetails customUserDetailsService;
+//    @Autowired
+//    @Qualifier("customUserDetailsService")
+//    private CustomUserDetails customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
@@ -44,35 +47,34 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-
-        String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
-            Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(SECRET)
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
-            //FIXME add exception
-            String user = claimsJws
-                    .getBody()
-                    .getSubject();
-
-            String role = claimsJws.getBody()
-                    .get("role").toString();
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+role);
-            List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
-            updatedAuthorities.add(authority);
-
-
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, updatedAuthorities);
+        try {
+            String token = request.getHeader(HEADER_STRING);
+            if (token != null) {
+                Jws<Claims> claimsJws = Jwts.parser()
+                        .setSigningKey(SECRET)
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
+                String user = claimsJws
+                        .getBody()
+                        .getSubject();
+                String role = claimsJws.getBody()
+                        .get("role").toString();
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+                List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+                updatedAuthorities.add(authority);
+                if (user != null) {
+                    return new UsernamePasswordAuthenticationToken(user, null, updatedAuthorities);
+                }
             }
-            return null;
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new MyJwtException("Invalid Jwt Token", HttpStatus.UNAUTHORIZED);
         }
         return null;
     }
+
 }
+

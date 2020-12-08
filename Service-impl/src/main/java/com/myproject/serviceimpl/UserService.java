@@ -7,6 +7,7 @@ import com.myproject.domain.entity.History;
 import com.myproject.domain.entity.Scooter;
 import com.myproject.domain.entity.User;
 import com.myproject.domain.enums.OfferType;
+import com.myproject.domain.enums.Role;
 import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.UserDto;
 import com.myproject.dto.mapper.HistoryMapper;
@@ -15,6 +16,7 @@ import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +48,6 @@ public class UserService implements UserServiceApi {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    OAuth2ResourceServerConfigurer.JwtConfigurer jwtConfigurer;
-
-
     private Double offerCost = 1.0;
     private Double offerSubscription = offerCost * 5;
     private Double discount = 0.9;
@@ -69,6 +68,8 @@ public class UserService implements UserServiceApi {
     @Override
     public UserDto update(UserDto entity, int id) {
         User user = findById(id);
+        entity.setId(user.getId());
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         User newUser = userMapper.toEntity(entity);
         return userMapper.toDto(userDao.updateUser(newUser));
     }
@@ -96,6 +97,7 @@ public class UserService implements UserServiceApi {
             throw new UserServiceException("Error");
         }
     }
+
 
     @Transactional
     @Override
@@ -165,10 +167,9 @@ public class UserService implements UserServiceApi {
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
-            }
+            } else throw new UsernameNotFoundException("User not found");
         }
-        //FIXME throw exception
-        return user;
+        return null;
     }
 
 
@@ -194,6 +195,19 @@ public class UserService implements UserServiceApi {
         User user = userMapper.toEntity(entity);
         if (user != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userMapper.toDto(userDao.saveUser(user));
+        } else {
+            throw new UserServiceException("User service throws null");
+        }
+    }
+
+    @Transactional
+    @Override
+    public UserDto userRegistration(UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRole(Role.USER);
             return userMapper.toDto(userDao.saveUser(user));
         } else {
             throw new UserServiceException("User service throws null");

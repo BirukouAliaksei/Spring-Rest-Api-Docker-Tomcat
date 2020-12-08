@@ -1,6 +1,5 @@
 package com.myproject.rest;
 
-import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.UserDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.UserServiceApi;
@@ -35,6 +34,7 @@ public class UserController {
         return userServiceApi.update(userDto, id);
     }
 
+    //FIXME Change return method
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
     public HttpStatus deleteById(@PathVariable("id") int id) {
@@ -53,12 +53,13 @@ public class UserController {
     ArrayList<UserDto> findById(@PathVariable("id") int id) {
         return userServiceApi.findByIdWithHistory(id);
     }
-
-
-    @GetMapping(value = "/{id}/history")
-    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-    public ArrayList<HistoryDto> findHistoryById(@PathVariable("id") int id) {
-        return historyServiceApi.findHistoryByUserId(id);
-    }
 }
+
+
+//    @GetMapping(value = "/{id}/history")
+//    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+//    public ArrayList<HistoryDto> findHistoryById(@PathVariable("id") int id) {
+//        return historyServiceApi.findHistoryByUserId(id);
+//    }
+//}
 

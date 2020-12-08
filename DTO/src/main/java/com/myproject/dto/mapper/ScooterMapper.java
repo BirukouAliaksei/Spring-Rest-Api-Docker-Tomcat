@@ -1,6 +1,7 @@
 package com.myproject.dto.mapper;
 
 import com.myproject.domain.entity.Scooter;
+import com.myproject.dto.dto.ScooterAdminDto;
 import com.myproject.dto.dto.ScooterDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,13 @@ public class ScooterMapper implements Mapper<Scooter, ScooterDto> {
     @Override
     public ScooterDto toDto(Scooter entity) {
         return Objects.isNull(entity) ? null : modelMapper.map(entity, ScooterDto.class);
+    }
+
+    public Scooter toAdminEntity(ScooterAdminDto scooterAdminDtoDto) {
+        return Objects.isNull(scooterAdminDtoDto) ? null : modelMapper.map(scooterAdminDtoDto, Scooter.class);
+    }
+
+    public ScooterAdminDto toAdminDto(Scooter scooter) {
+        return Objects.isNull(scooter) ? null : modelMapper.map(scooter, ScooterAdminDto.class);
     }
 }

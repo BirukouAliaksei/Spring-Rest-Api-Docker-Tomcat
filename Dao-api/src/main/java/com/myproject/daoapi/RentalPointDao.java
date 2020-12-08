@@ -1,7 +1,6 @@
 package com.myproject.daoapi;
 
 import com.myproject.domain.entity.RentalPoint;
-import com.myproject.domain.entity.Scooter;
 
 import java.util.ArrayList;
 

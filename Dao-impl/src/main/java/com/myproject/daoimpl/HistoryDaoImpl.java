@@ -14,7 +14,6 @@ public class HistoryDaoImpl extends GenericDaoImpl<History> implements HistoryDa
         super(History.class);
     }
 
-
     @Override
     public History findHistoryById(int id) {
         return this.findById(id);

@@ -1,5 +1,6 @@
 package com.myproject.serviceapi;
 
+import com.myproject.dto.dto.ScooterAdminDto;
 import com.myproject.dto.dto.ScooterDto;
 import org.springframework.http.HttpStatus;
 
@@ -18,4 +19,6 @@ public interface ScooterServiceApi {
     ScooterDto findById(int id);
 
     ArrayList<ScooterDto> findRentalPointScootersById(int id);
+
+    ScooterAdminDto findScooterById(int id);
 }

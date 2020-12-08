@@ -1,0 +1,41 @@
+Rest Controller:
+
+    ROLES(ALL), POST: /registration  - RequestBody example
+        {"username":"username","email":"email@mail.com","password":"password"}
+    ROLES(ALL), POST: /auth/login - RequestBody example ({"username":"username","password":"password"})
+    if authorization is successful you will get a token (24h);
+
+    ROLES(ADMIN), POST: /users - create user,
+        RequestBody example ({"username":"username","email":"email@mail.com","password":"password","role":"role USER/ADMIN"})
+    ROLES(ADMIN), PUT:  /users/:id - update user by id, PathVariable: id
+        RequestBody example ({"username":"username","email":"email@mail.com","password":"password","role":"role USER/ADMIN"})
+    ROLES(ADMIN), DELETE: /users/:id - delete user by id, PathVariable: id
+    ROLES(ADMIN), GET: /users - find all users
+    ROLES(ALL), GET: /users/:id - find user by id and his trip history, PathVariable: id
+
+    ROLES(ALL), POST: /trip/:id/start_trip - start trip , PathVariable: id(user id)
+        RequestBody example {"startLocationId": 1,"offerType": "ONCE_TIME", "scooterId": int id}
+    ROLES(ALL), PUT: /trip/:id/finish_trip/{historyId} - finish trip , PathVariable: id(user id), history id
+        RequestBody example { "mileage": int mileage,"finishLocationId": int location id}
+
+    ROLES(ADMIN), POST: /scooters - create scooter,
+        RequestBody example {"cost": 15.0,"model": "Segway","availability": true,"battery": 100, "rentalPointId":1}
+    ROLES(ADMIN), PUT:  /scooters/:id - update scooter by id, PathVariable: id
+         RequestBody example {"cost": 15.0,"model": "Segway","availability": true,"battery": 100, "rentalPointId":1}
+    ROLES(ADMIN), DELETE: /scooters/:id - delete scooter by id, PathVariable: id
+    ROLES(ALL), GET: /scooters - find all scooters
+    ROLES(ALL), GET: /scooters/:id - find scooters by id and his trip history, PathVariable: id
+    ROLES(ADMIN), GET: /scooters/:id/history - find scooters by id and his trip history, PathVariable: id
+
+    ROLES(ADMIN), POST: /rental_points - create rental point,
+         RequestBody example {"address": "address","parentId": 1,"latitude": 2,"longitude": 3}
+    ROLES(ADMIN), PUT:  /rental_points/:id - update rental point by id, PathVariable: id
+         RequestBody example {"address": "address","parentId": 1,"latitude": 2,"longitude": 3}
+    ROLES(ADMIN), DELETE: /rental_points/:id - delete rental point by id, PathVariable: id
+    ROLES(ALL), GET: /rental_points - find all rental points
+    ROLES(ALL), GET: /rental_points/:id - find rental point by id, PathVariable: id
+    ROLES(ALL), GET: /rental_points/id/scooters - find rental point with all scooters on point by id, PathVariable: id
+
+    ROLES(ADMIN), GET: /history - find all history
+    ROLES(ADMIN), GET: /history/:id - find history by history id, PathVariable: id
+

@@ -4,6 +4,7 @@ import com.myproject.daoapi.HistoryDao;
 import com.myproject.daoapi.ScooterDao;
 import com.myproject.daoapi.UserDao;
 import com.myproject.domain.entity.Scooter;
+import com.myproject.dto.dto.ScooterAdminDto;
 import com.myproject.dto.dto.ScooterDto;
 import com.myproject.dto.mapper.ScooterMapper;
 import com.myproject.serviceapi.ScooterServiceApi;
@@ -62,10 +63,12 @@ public class ScooterService implements ScooterServiceApi {
     @Override
     public ScooterDto save(ScooterDto entity) {
         Scooter scooter = scooterMapper.toEntity(entity);
-        if (scooter != null) {
-            return scooterMapper.toDto(scooterDao.saveScooter(scooter));
-        } else {
+        if (scooter == null || scooter.getModel() == null ||
+                scooter.getCost() == null || scooter.getRentalPointId() == 0
+                || scooter.isAvailability() == Boolean.parseBoolean(null)) {
             throw new ScooterServiceException("Scooter service throws null");
+        } else {
+            return scooterMapper.toDto(scooterDao.saveScooter(scooter));
         }
     }
 
@@ -107,6 +110,16 @@ public class ScooterService implements ScooterServiceApi {
             throw new ScooterServiceException("Error");
         } else {
             return scooterMapper.toDto(scooter);
+        }
+    }
+
+    @Override
+    public ScooterAdminDto findScooterById(int id) {
+        Scooter scooter = scooterDao.findScooterById(id);
+        if (scooter == null) {
+            throw new ScooterServiceException("Error");
+        } else {
+            return scooterMapper.toAdminDto(scooter);
         }
     }
 }

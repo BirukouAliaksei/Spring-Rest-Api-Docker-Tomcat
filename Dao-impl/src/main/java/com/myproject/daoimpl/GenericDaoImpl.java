@@ -15,11 +15,11 @@ import java.util.ArrayList;
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @PersistenceContext
-    public EntityManager entityManager;
+    private EntityManager entityManager;
 
     private Class<T> type;
 
-    public GenericDaoImpl(Class<T> type) {
+    GenericDaoImpl(Class<T> type) {
         super();
         this.type = type;
     }

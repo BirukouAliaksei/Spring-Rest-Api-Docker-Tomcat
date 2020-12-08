@@ -5,9 +5,7 @@ import com.myproject.domain.entity.User;
 
 import java.util.ArrayList;
 
-public interface UserDao  {
-
-    User findUserByName(String name);
+public interface UserDao {
 
     ArrayList<User> findAllUsers();
 

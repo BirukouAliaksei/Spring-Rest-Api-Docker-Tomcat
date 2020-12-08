@@ -22,21 +22,15 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Override
     @Transactional
     public User findByLogin(String login) {
-        User userById =null;
+        User userById = null;
         for (User user : findAllUsers()) {
             if (user.getUsername().equalsIgnoreCase(login)) {
-               userById = findUserById(user.getId());
-               break;
+                userById = findUserById(user.getId());
+                break;
             }
         }
         return userById;
 //        return entityManager.find(User.class, login);
-    }
-
-    @Override
-    public User findUserByName(String name) {
-        //FIXME add user by name
-        return null;
     }
 
     @Override

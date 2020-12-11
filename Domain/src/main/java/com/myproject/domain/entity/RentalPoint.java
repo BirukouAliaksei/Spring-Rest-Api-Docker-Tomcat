@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,6 +16,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "rental_point")
 public class RentalPoint {
+
+    @OneToMany(mappedBy = "point", fetch = FetchType.LAZY)
+    private Set<Scooter> scooters;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

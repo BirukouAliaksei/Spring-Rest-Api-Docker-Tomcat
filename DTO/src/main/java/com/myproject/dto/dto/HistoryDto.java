@@ -1,6 +1,8 @@
 package com.myproject.dto.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.myproject.domain.entity.Scooter;
+import com.myproject.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +26,13 @@ public class HistoryDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime finishTime;
-
     private int startLocationId;
     private int finishLocationId;
     private String offerType;
     private int offerCost;
     private int scooterId;
     private String discount;
+
+//    private Scooter scooter;
+//    private User user;
 }

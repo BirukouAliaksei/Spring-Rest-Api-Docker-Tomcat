@@ -8,11 +8,13 @@ import com.myproject.dto.dto.AuthResponse;
 import com.myproject.dto.dto.UserDto;
 import com.myproject.dto.mapper.UserMapper;
 import com.myproject.serviceapi.UserServiceApi;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Log4j
 @RestController
 public class AuthController {
     @Autowired

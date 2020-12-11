@@ -3,10 +3,12 @@ package com.myproject.rest;
 import com.myproject.dto.dto.HistoryDto;
 import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.HistoryService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+@Log4j
 @RestController
 @RequestMapping("/trip")
 public class TripController {

@@ -1,6 +1,7 @@
 package com.myproject.dto.dto;
 
 import com.myproject.domain.entity.History;
+import com.myproject.domain.entity.Scooter;
 import lombok.Data;
 import org.springframework.security.access.annotation.Secured;
 

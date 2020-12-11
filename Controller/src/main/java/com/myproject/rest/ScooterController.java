@@ -1,17 +1,17 @@
 package com.myproject.rest;
 
-import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.ScooterAdminDto;
 import com.myproject.dto.dto.ScooterDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.ScooterServiceApi;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@Log4j
 @RestController
 @RequestMapping("/scooters")
 public class ScooterController {
@@ -37,8 +37,7 @@ public class ScooterController {
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
     public String delete(@PathVariable("id") int id) {
-        scooterServiceApi.delete(id);
-        return "Scooter deleted";
+        return scooterServiceApi.delete(id);
     }
 
     @GetMapping

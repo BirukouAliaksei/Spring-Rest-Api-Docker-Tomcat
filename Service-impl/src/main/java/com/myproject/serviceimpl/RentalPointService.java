@@ -52,18 +52,17 @@ public class RentalPointService implements RentalPointServiceApi {
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public String delete(int id) {
         if (rentalPointDao.findAllRentalPoints() == null) {
             throw new RentalPointServiceException("");
         } else {
             for (RentalPoint rentalPoint : rentalPointDao.findAllRentalPoints()) {
                 if (rentalPoint.getId() == id) {
                     rentalPointDao.deleteRentalPoint(rentalPoint);
-                }else {
-                    throw new ServiceValidationException();
+                    return "Rental point deleted";
                 }
             }
-        }
+        }return "Rental point already deleted";
     }
 
     @Transactional

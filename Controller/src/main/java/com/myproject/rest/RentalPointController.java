@@ -4,12 +4,14 @@ import com.myproject.dto.dto.RentalPointDto;
 import com.myproject.dto.dto.ScooterDto;
 import com.myproject.serviceapi.RentalPointServiceApi;
 import com.myproject.serviceapi.ScooterServiceApi;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@Log4j
 @RestController
 @RequestMapping("/rental_points")
 public class RentalPointController {
@@ -42,8 +44,7 @@ public class RentalPointController {
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
     public String delete(@PathVariable("id") int id) {
-        rentalPointServiceApi.delete(id);
-        return "Rental point deleted";
+        return rentalPointServiceApi.delete(id);
     }
 
     @GetMapping

@@ -107,10 +107,10 @@ public class UserService implements UserServiceApi {
             throw new ServiceValidationException();
         } else {
             History history = historyMapper.toEntity(historyDto);
-            Scooter scooter = scooterDao.findScooterById(history.getScooterId());
+            Scooter scooter = scooterDao.findScooterById(historyDto.getScooterId());
             String scooterDiscount = history.getDiscount();
             if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())) {
-                if (history.getDiscount().equals(scooterDiscount)) {
+                if (historyDto.getDiscount().equals(scooterDiscount)) {
                     offerCost = scooter.getCost() * 10 * discount;
                 } else {
                     offerCost = scooter.getCost() * 10;
@@ -119,7 +119,7 @@ public class UserService implements UserServiceApi {
             offerCost = scooter.getCost() * 10 * discount;
 
             if (history.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
-                if (history.getDiscount().equals(scooterDiscount)) {
+                if (historyDto.getDiscount().equals(scooterDiscount)) {
                     offerCost = scooter.getCost() * discount;
                 } else {
                     offerCost = scooter.getCost();
@@ -134,15 +134,14 @@ public class UserService implements UserServiceApi {
             history.setScooterId(history.getScooterId());
             history.setStartTime(LocalDateTime.now());
             history.setFinishTime(LocalDateTime.now());
-            historyDao.saveHistory(history);
-            return historyMapper.toDto(historyDao.findHistoryById(history.getId()));
+            return historyMapper.toDto(historyDao.saveHistory(history));
         }
     }
 
     @Transactional
     @Override
     public HistoryDto finishTrip(int id, HistoryDto historyDto, int historyId) {
-        if (id == 0 || historyDto.getFinishLocationId() == Integer.parseInt(null)
+        if (id == 0 || historyDto.getFinishLocationId() == 0
                 || historyDto.getMileage() == null || historyId == 0) {
             throw new ServiceValidationException();
         } else {
@@ -184,18 +183,17 @@ public class UserService implements UserServiceApi {
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public String delete(int id) {
         if (userDao.findAllUsers() == null) {
             throw new UserServiceException("Users not found");
         } else {
             for (User user : userDao.findAllUsers()) {
                 if (user.getId() == id) {
                     userDao.deleteUser(user);
-                }else {
-                    throw new ServiceValidationException();
+                    return "User deleted";
                 }
             }
-        }
+        }return "User already deleted";
     }
 
     @Transactional

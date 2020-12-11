@@ -1,9 +1,12 @@
 package com.myproject.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,6 +21,12 @@ public class Scooter {
 
     @OneToMany(mappedBy = "scooter", fetch = FetchType.EAGER)
     private Set<History> histories;
+
+    @ManyToOne(targetEntity = RentalPoint.class)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "rental_point_id",insertable = false, updatable = false)
+    @JsonIgnore
+    private RentalPoint point;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

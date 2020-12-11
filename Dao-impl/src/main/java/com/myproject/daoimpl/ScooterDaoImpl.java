@@ -15,6 +15,7 @@ public class ScooterDaoImpl extends GenericDaoImpl<Scooter> implements ScooterDa
         super(Scooter.class);
     }
 
+    @Transactional
     @Override
     public Scooter findScooterById(int id) {
         return this.findById(id);

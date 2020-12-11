@@ -6,6 +6,8 @@ import com.myproject.serviceimpl.exceptions.ScooterServiceException;
 import com.myproject.serviceimpl.exceptions.ServiceValidationException;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
 import lombok.Data;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+@Log4j
 @ControllerAdvice
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -58,6 +61,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
         public AwesomeException(String s) {
             message = s;
+            log.error(s);
         }
     }
 
@@ -69,6 +73,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
         public DetailsAwesomeException(String s, int status) {
             message = s;
             code = status;
+            log.error(s + status);
         }
     }
 }

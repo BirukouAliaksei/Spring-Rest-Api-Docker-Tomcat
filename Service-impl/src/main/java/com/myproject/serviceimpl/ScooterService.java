@@ -78,18 +78,18 @@ public class ScooterService implements ScooterServiceApi {
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public String delete(int id) {
         if (scooterDao.findAllScooters() == null) {
             throw new UserServiceException("");
         } else {
             for (Scooter scooter : scooterDao.findAllScooters()) {
                 if (scooter.getId() == id) {
                     scooterDao.deleteScooter(scooter);
-                }else {
-                    throw new ServiceValidationException();
+                    return "Scooter deleted";
                 }
             }
         }
+        return "Scooter already deleted";
     }
 
     @Transactional
@@ -111,7 +111,7 @@ public class ScooterService implements ScooterServiceApi {
         }
     }
 
-
+    @Transactional
     @Override
     public ScooterDto findById(int id) {
         Scooter scooter = scooterDao.findScooterById(id);
@@ -122,6 +122,7 @@ public class ScooterService implements ScooterServiceApi {
         }
     }
 
+    @Transactional
     @Override
     public ScooterAdminDto findScooterById(int id) {
         Scooter scooter = scooterDao.findScooterById(id);

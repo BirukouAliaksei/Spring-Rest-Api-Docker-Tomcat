@@ -3,13 +3,14 @@ package com.myproject.rest;
 import com.myproject.dto.dto.UserDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.UserServiceApi;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@Log4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -38,8 +39,7 @@ public class UserController {
     @DeleteMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
     public String deleteById(@PathVariable("id") int id) {
-        userServiceApi.delete(id);
-        return "User deleted";
+        return userServiceApi.delete(id);
     }
 
     @GetMapping

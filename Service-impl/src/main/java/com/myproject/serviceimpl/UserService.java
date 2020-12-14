@@ -165,13 +165,21 @@ public class UserService implements UserServiceApi {
 
     @Transactional
     public User findByLogin(String login) {
+        if (userDao.findByLogin(login) == null) {
+            throw new ServiceValidationException();
+        }
         return userDao.findByLogin(login);
     }
 
     @Override
     @Transactional
     public User findByLoginAndPassword(String login, String password) {
-        User user = userDao.findByLogin(login);
+        User user;
+        if (userDao.findByLogin(login) == null) {
+            throw new UsernameNotFoundException("Wrong username");
+        } else {
+            user = userDao.findByLogin(login);
+        }
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
@@ -193,7 +201,8 @@ public class UserService implements UserServiceApi {
                     return "User deleted";
                 }
             }
-        }return "User already deleted";
+        }
+        return "User already deleted";
     }
 
     @Transactional

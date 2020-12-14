@@ -1,6 +1,7 @@
 package com.myproject.serviceimpl;
 
 import com.myproject.daoapi.UserDao;
+import com.myproject.domain.entity.History;
 import com.myproject.domain.entity.User;
 import com.myproject.domain.enums.Role;
 import com.myproject.dto.dto.UserDto;
@@ -11,7 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -38,13 +42,13 @@ class UserServiceTest {
     private ArrayList<UserDto> allUserDto = new ArrayList();
 
     @BeforeEach
-    public void createMocks() {
+    void createMocks() {
         MockitoAnnotations.initMocks(this);
-//        all.add(new User(0, "Aleks", "pppp", "pppp", Role.USER.toString()));
-//        all.add(new User(1, "Aleksa", "pp@", "pppp", Role.USER.toString()));
-//
-//        allUserDto.add(new UserDto(1,"Aleks", "pppp", "pppp", Role.USER.toString()));
-//        allUserDto.add(new UserDto(1,"Aleksa", "pp@", "pppp", Role.USER.toString()));
+        all.add(new User());
+        all.add(new User());
+
+        allUserDto.add(new UserDto());
+        allUserDto.add(new UserDto());
     }
 
     @Test
@@ -66,12 +70,13 @@ class UserServiceTest {
 
     @Test
     void save() {
-//        user = new User(3, "Ale", "pp", "pppp", Role.USER.toString());
-        userService.save(userDto);
+        Set<History> histories = new LinkedHashSet<>();
+        histories.add(new History());
+        when(userDao.findAllUsers()).thenReturn(all);
+//        user = new User();
+        userService.save(new UserDto(1,"d","s","b",Role.USER.getAuthority(), histories));
         verify(userDao, times(1)).saveUser(user);
     }
 
-    @Test
-    void getUserByName() {
-    }
+
 }

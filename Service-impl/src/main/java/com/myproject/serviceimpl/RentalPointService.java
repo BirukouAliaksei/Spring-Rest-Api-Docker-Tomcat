@@ -7,12 +7,14 @@ import com.myproject.dto.mapper.RentalPointMapper;
 import com.myproject.serviceapi.RentalPointServiceApi;
 import com.myproject.serviceimpl.exceptions.RentalPointServiceException;
 import com.myproject.serviceimpl.exceptions.ServiceValidationException;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
+@Log4j
 @Service
 public class RentalPointService implements RentalPointServiceApi {
 
@@ -50,6 +52,7 @@ public class RentalPointService implements RentalPointServiceApi {
         }
     }
 
+
     @Transactional
     @Override
     public String delete(int id) {
@@ -62,7 +65,8 @@ public class RentalPointService implements RentalPointServiceApi {
                     return "Rental point deleted";
                 }
             }
-        }return "Rental point already deleted";
+        }
+        return "Rental point already deleted";
     }
 
     @Transactional

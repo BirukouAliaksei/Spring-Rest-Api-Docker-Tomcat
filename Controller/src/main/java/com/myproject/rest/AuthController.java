@@ -8,11 +8,10 @@ import com.myproject.dto.dto.AuthResponse;
 import com.myproject.dto.dto.UserDto;
 import com.myproject.dto.mapper.UserMapper;
 import com.myproject.serviceapi.UserServiceApi;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Log4j
 @RestController
@@ -35,4 +34,5 @@ public class AuthController {
         String token = jwtProvider.generateToken(user.getUsername(), user.getRole().getAuthority());
         return new AuthResponse(token);
     }
+
 }

@@ -3,6 +3,7 @@ package com.myproject.rest;
 import com.myproject.dto.dto.UserDto;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceapi.UserServiceApi;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -49,6 +50,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
+    @ApiOperation(value = "My App Service get test1 API")
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public @ResponseBody
     ArrayList<UserDto> findById(@PathVariable("id") int id) {

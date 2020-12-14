@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import static com.myproject.config.security.SecurityConstants.SIGN_UP_URL;
 
@@ -50,7 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/swagger/**").permitAll()
                 .antMatchers(SIGN_UP_URL, "/auth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()

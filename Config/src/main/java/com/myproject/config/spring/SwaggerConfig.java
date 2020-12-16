@@ -25,12 +25,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build().apiInfo(apiInfo()).useDefaultResponseMessages(false)
-                .pathMapping("/").securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
+                .pathMapping("/");
     }
 
     @Bean

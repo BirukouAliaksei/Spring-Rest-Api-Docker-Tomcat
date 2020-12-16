@@ -26,7 +26,6 @@ import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel;
 
-
 @Configuration
 @EnableJpaRepositories
 @EnableTransactionManagement

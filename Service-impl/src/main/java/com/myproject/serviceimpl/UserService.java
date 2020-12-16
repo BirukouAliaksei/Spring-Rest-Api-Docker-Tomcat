@@ -15,6 +15,8 @@ import com.myproject.dto.mapper.UserMapper;
 import com.myproject.serviceapi.UserServiceApi;
 import com.myproject.serviceimpl.exceptions.ServiceValidationException;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,11 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@Log4j
 @Service
+@NoArgsConstructor
 public class UserService implements UserServiceApi {
-
-    public UserService() {
-    }
 
     @Autowired
     private UserDao userDao;
@@ -49,8 +50,7 @@ public class UserService implements UserServiceApi {
     private PasswordEncoder passwordEncoder;
 
     private Double offerCost = 1.0;
-    private Double offerSubscription = offerCost * 5;
-    private Double discount = 0.9;
+    private Double tripDiscount = 0.9;
 
     @Transactional
     @Override
@@ -68,12 +68,16 @@ public class UserService implements UserServiceApi {
     @Override
     public UserDto update(UserDto entity, int id) {
         User user = findById(id);
-        entity.setId(user.getId());
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        User newUser = userMapper.toEntity(entity);
-        return userMapper.toDto(userDao.updateUser(newUser));
+        if (entity.getEmail() == null || entity.getPassword() == null
+                || entity.getUsername() == null || entity.getRole() == null) {
+            throw new UserServiceException("User service throws null");
+        } else {
+            entity.setId(user.getId());
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            User newUser = userMapper.toEntity(entity);
+            return userMapper.toDto(userDao.updateUser(newUser));
+        }
     }
-
 
     @Override
     public User findById(int id) {
@@ -84,7 +88,6 @@ public class UserService implements UserServiceApi {
             throw new UserServiceException("Error");
         }
     }
-
 
     @Override
     public ArrayList<UserDto> findByIdWithHistory(int id) {
@@ -98,39 +101,34 @@ public class UserService implements UserServiceApi {
         }
     }
 
-
     @Transactional
     @Override
     public HistoryDto startTrip(int id, HistoryDto historyDto) {
-        if (id == 0 || historyDto.getStartLocationId() == 0 || historyDto.getOfferType() == null
+        if (id == 0 || historyDto.getOfferType() == null
                 || historyDto.getScooterId() == 0) {
             throw new ServiceValidationException();
         } else {
             History history = historyMapper.toEntity(historyDto);
             Scooter scooter = scooterDao.findScooterById(historyDto.getScooterId());
-            String scooterDiscount = history.getDiscount();
-            if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())) {
-                if (historyDto.getDiscount().equals(scooterDiscount)) {
-                    offerCost = scooter.getCost() * 10 * discount;
-                } else {
+
+            if (historyDto.getDiscount() != null && historyDto.getDiscount().equals(History.discount)){
+                if (historyDto.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
+                    offerCost = scooter.getCost() * tripDiscount;
+                }
+                if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())){
+                    offerCost = scooter.getCost() * 10 * tripDiscount;
+                }
+            }else {
+                if (historyDto.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
+                    offerCost = scooter.getCost();
+                }
+                if (history.getOfferType().equals(OfferType.SUBSCRIPTION.toString())){
                     offerCost = scooter.getCost() * 10;
                 }
             }
-            offerCost = scooter.getCost() * 10 * discount;
 
-            if (history.getOfferType().equals(OfferType.ONCE_TIME.toString())) {
-                if (historyDto.getDiscount().equals(scooterDiscount)) {
-                    offerCost = scooter.getCost() * discount;
-                } else {
-                    offerCost = scooter.getCost();
-                }
-            }
             history.setUserId(id);
-            history.setMileage(0.0);
-            history.setOfferCost(0.0);
-            history.setOfferType(history.getOfferType());
             history.setStartLocationId(scooter.getRentalPointId());
-            history.setFinishLocationId(0);
             history.setScooterId(history.getScooterId());
             history.setStartTime(LocalDateTime.now());
             history.setFinishTime(LocalDateTime.now());
@@ -145,19 +143,14 @@ public class UserService implements UserServiceApi {
                 || historyDto.getMileage() == null || historyId == 0) {
             throw new ServiceValidationException();
         } else {
-            History newHistory = historyMapper.toEntity(historyDto);
             History history = historyDao.findHistoryById(historyId);
-            history.setUserId(id);
-            history.setMileage(newHistory.getMileage());
             history.setOfferCost(offerCost);
-            history.setOfferType(history.getOfferType());
-            history.setStartLocationId(history.getStartLocationId());
-            history.setFinishLocationId(newHistory.getFinishLocationId());
-            history.setStartTime(history.getStartTime());
+            history.setMileage(historyDto.getMileage());
             history.setFinishTime(LocalDateTime.now());
-            history.setScooterId(history.getScooterId());
+            history.setFinishLocationId(historyDto.getFinishLocationId());
+
             Scooter scooter = scooterDao.findScooterById(history.getScooterId());
-            scooter.setRentalPointId(newHistory.getFinishLocationId());
+            scooter.setRentalPointId(historyDto.getFinishLocationId());
             scooterDao.updateScooter(scooter);
             return historyMapper.toDto(historyDao.updateHistory(history));
         }
@@ -188,7 +181,6 @@ public class UserService implements UserServiceApi {
         return null;
     }
 
-
     @Transactional
     @Override
     public String delete(int id) {
@@ -208,26 +200,26 @@ public class UserService implements UserServiceApi {
     @Transactional
     @Override
     public UserDto save(UserDto entity) {
-        User user = userMapper.toEntity(entity);
-        if (user != null) {
+        if (entity.getEmail() == null || entity.getPassword() == null
+                || entity.getUsername() == null || entity.getRole() == null) {
+            throw new UserServiceException("User service throws null");
+        } else {
+            User user = userMapper.toEntity(entity);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userMapper.toDto(userDao.saveUser(user));
-        } else {
-            throw new UserServiceException("User service throws null");
         }
     }
 
     @Transactional
     @Override
     public UserDto userRegistration(UserDto userDto) {
-        User user = userMapper.toEntity(userDto);
-        if (user != null) {
+        if (userDto.getUsername() == null || userDto.getPassword() == null || userDto.getEmail() == null) {
+            throw new UserServiceException("User service throws null");
+        } else {
+            User user = userMapper.toEntity(userDto);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRole(Role.USER);
             return userMapper.toDto(userDao.saveUser(user));
-        } else {
-            throw new UserServiceException("User service throws null");
         }
     }
-
 }

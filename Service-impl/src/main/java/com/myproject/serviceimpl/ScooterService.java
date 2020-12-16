@@ -11,6 +11,7 @@ import com.myproject.serviceapi.ScooterServiceApi;
 import com.myproject.serviceimpl.exceptions.ScooterServiceException;
 import com.myproject.serviceimpl.exceptions.ServiceValidationException;
 import com.myproject.serviceimpl.exceptions.UserServiceException;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-@Service
 @Log4j
+@Service
+@NoArgsConstructor
 public class ScooterService implements ScooterServiceApi {
-
-    public ScooterService() {
-    }
 
     @Autowired
     private ScooterDao scooterDao;
@@ -36,7 +35,6 @@ public class ScooterService implements ScooterServiceApi {
 
     @Autowired
     private ScooterMapper scooterMapper;
-
 
     @Transactional
     public ArrayList<ScooterDto> findRentalPointScootersById(int id) {
@@ -65,8 +63,7 @@ public class ScooterService implements ScooterServiceApi {
     @Transactional
     @Override
     public ScooterDto save(ScooterDto entity) {
-        if (entity == null || entity.getModel() == null
-                || entity.getCost() == null || entity.getRentalPointId() == 0
+        if (entity.getModel() == null || entity.getCost() == null || entity.getRentalPointId() == 0
                 || entity.isAvailability() == Boolean.parseBoolean(null)) {
             log.info("not valid data");
             throw new ServiceValidationException();
@@ -80,7 +77,7 @@ public class ScooterService implements ScooterServiceApi {
     @Override
     public String delete(int id) {
         if (scooterDao.findAllScooters() == null) {
-            throw new UserServiceException("");
+            throw new ScooterServiceException("Throws null");
         } else {
             for (Scooter scooter : scooterDao.findAllScooters()) {
                 if (scooter.getId() == id) {
@@ -98,15 +95,12 @@ public class ScooterService implements ScooterServiceApi {
         if (entity == null || entity.getModel() == null ||
                 entity.getCost() == null || entity.getRentalPointId() == 0
                 || entity.isAvailability() == Boolean.parseBoolean(null)) {
+            log.info("not valid data");
             throw new ServiceValidationException();
         } else {
-            Scooter newScooter = scooterMapper.toEntity(entity);
-            Scooter scooter = scooterDao.findScooterById(id);
+            findById(id);
+            Scooter scooter = scooterMapper.toEntity(entity);
             scooter.setId(id);
-            scooter.setCost(newScooter.getCost());
-            scooter.setModel(newScooter.getModel());
-            scooter.setAvailability(newScooter.isAvailability());
-            scooter.setBattery(newScooter.getBattery());
             return scooterMapper.toDto(scooterDao.updateScooter(scooter));
         }
     }

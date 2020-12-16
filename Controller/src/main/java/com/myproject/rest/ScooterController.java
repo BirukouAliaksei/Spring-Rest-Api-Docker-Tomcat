@@ -58,9 +58,4 @@ public class ScooterController {
         return scooterServiceApi.findScooterById(id);
     }
 
-//    @GetMapping(value = "/{id}/history")
-//    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-//    public ArrayList<HistoryDto> findScooterHistoryById(@PathVariable("id") int id) {
-//        return historyServiceApi.findScooterHistoryById(id);
-//    }
 }

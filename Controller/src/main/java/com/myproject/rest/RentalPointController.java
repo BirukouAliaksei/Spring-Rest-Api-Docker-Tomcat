@@ -37,8 +37,8 @@ public class RentalPointController {
 
     @PutMapping(value = "/{id}")
     @Secured(value = "ROLE_ADMIN")
-    public void update(@RequestBody RentalPointDto rentalPointDto, @PathVariable("id") int id) {
-        rentalPointServiceApi.update(rentalPointDto, id);
+    public RentalPointDto update(@RequestBody RentalPointDto rentalPointDto, @PathVariable("id") int id) {
+       return rentalPointServiceApi.update(rentalPointDto, id);
     }
 
     @DeleteMapping(value = "/{id}")

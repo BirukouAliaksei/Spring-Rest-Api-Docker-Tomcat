@@ -7,6 +7,7 @@ import com.myproject.dto.mapper.RentalPointMapper;
 import com.myproject.serviceapi.RentalPointServiceApi;
 import com.myproject.serviceimpl.exceptions.RentalPointServiceException;
 import com.myproject.serviceimpl.exceptions.ServiceValidationException;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,14 @@ import java.util.ArrayList;
 
 @Log4j
 @Service
+@NoArgsConstructor
 public class RentalPointService implements RentalPointServiceApi {
-
-    public RentalPointService() {
-    }
 
     @Autowired
     private RentalPointDao rentalPointDao;
 
     @Autowired
     private RentalPointMapper rentalPointMapper;
-
 
     @Transactional
     @Override
@@ -43,7 +41,7 @@ public class RentalPointService implements RentalPointServiceApi {
     @Transactional
     @Override
     public RentalPointDto save(RentalPointDto entity) {
-        if (entity == null || entity.getAddress() == null || entity.getParentId() == Integer.parseInt(null)
+        if (entity.getAddress() == null || entity.getParentId() == 0
                 || entity.getLatitude() == 0 || entity.getLongitude() == 0) {
             throw new ServiceValidationException();
         } else {
@@ -51,7 +49,6 @@ public class RentalPointService implements RentalPointServiceApi {
             return rentalPointMapper.toDto(rentalPointDao.saveRentalPoint(rentalPoint));
         }
     }
-
 
     @Transactional
     @Override
@@ -72,17 +69,13 @@ public class RentalPointService implements RentalPointServiceApi {
     @Transactional
     @Override
     public RentalPointDto update(RentalPointDto entity, int id) {
-        if (entity == null || entity.getAddress() == null || entity.getParentId() == Integer.parseInt(null)
+        if (entity.getAddress() == null || entity.getParentId() == 0
                 || entity.getLatitude() == 0 || entity.getLongitude() == 0) {
             throw new ServiceValidationException();
         } else {
-            RentalPoint newRentalPoint = rentalPointMapper.toEntity(entity);
-            RentalPoint rentalPoint = rentalPointDao.findRentalPointById(id);
+            rentalPointInfoById(id);
+            RentalPoint rentalPoint = rentalPointMapper.toEntity(entity);
             rentalPoint.setId(id);
-            rentalPoint.setAddress(newRentalPoint.getAddress());
-            rentalPoint.setParentId(newRentalPoint.getParentId());
-            rentalPoint.setLatitude(newRentalPoint.getLatitude());
-            rentalPoint.setLongitude(newRentalPoint.getLongitude());
             return rentalPointMapper.toDto(rentalPointDao.updateRentalPoint(rentalPoint));
         }
     }

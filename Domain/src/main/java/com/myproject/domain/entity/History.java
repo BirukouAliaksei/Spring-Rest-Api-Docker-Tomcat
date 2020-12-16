@@ -53,6 +53,6 @@ public class History {
     private int scooterId;
     @Transient
     //FIXME final static
-    private String discount = "discount";
+    public final static String discount = "discount";
 
 }

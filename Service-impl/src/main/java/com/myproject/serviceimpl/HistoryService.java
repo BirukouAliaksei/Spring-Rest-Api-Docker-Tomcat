@@ -6,17 +6,18 @@ import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.mapper.HistoryMapper;
 import com.myproject.serviceapi.HistoryServiceApi;
 import com.myproject.serviceimpl.exceptions.HistoryServiceException;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
+@Log4j
 @Service
+@NoArgsConstructor
 public class HistoryService implements HistoryServiceApi {
-
-    public HistoryService() {
-    }
 
     @Autowired
     private HistoryDao historyDaoApi;
@@ -36,10 +37,14 @@ public class HistoryService implements HistoryServiceApi {
         } else throw new HistoryServiceException("History service throws null");
     }
 
-
     @Override
     public HistoryDto findById(int id) {
-        return historyMapper.toDto(historyDaoApi.findHistoryById(id));
+        History history = historyDaoApi.findHistoryById(id);
+        if (history != null) {
+            return historyMapper.toDto(history);
+        } else {
+            throw new HistoryServiceException("History service throws null");
+        }
     }
 
 }

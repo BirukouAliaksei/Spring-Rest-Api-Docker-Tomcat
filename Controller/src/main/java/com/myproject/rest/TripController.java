@@ -16,7 +16,6 @@ public class TripController {
     @Autowired
     private UserServiceApi userServiceApi;
 
-
     @PostMapping(value = "/{id}/start_trip")
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public HistoryDto startTrip(@PathVariable("id") int id, @RequestBody HistoryDto historyDto) {

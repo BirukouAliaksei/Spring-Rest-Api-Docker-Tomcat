@@ -2,12 +2,14 @@ package com.myproject.dto.mapper;
 
 import com.myproject.domain.entity.History;
 import com.myproject.dto.dto.HistoryDto;
+import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Log4j
 @Component
 public class HistoryMapper implements Mapper<History, HistoryDto> {
 

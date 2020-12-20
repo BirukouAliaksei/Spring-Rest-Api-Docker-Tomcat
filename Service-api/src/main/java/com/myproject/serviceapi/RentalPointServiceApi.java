@@ -1,5 +1,6 @@
 package com.myproject.serviceapi;
 
+import com.myproject.dto.dto.RentalPointDetailsDto;
 import com.myproject.dto.dto.RentalPointDto;
 import org.springframework.http.HttpStatus;
 
@@ -17,4 +18,5 @@ public interface RentalPointServiceApi {
 
     RentalPointDto rentalPointInfoById(int id);
 
+    RentalPointDetailsDto findRentalPointScootersById(int id);
 }

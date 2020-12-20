@@ -28,5 +28,4 @@ public class HistoryDto {
     private int offerCost;
     private int scooterId;
     private String discount;
-
 }

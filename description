@@ -14,7 +14,7 @@ Rest Controller:
     ROLES(ALL), GET: /users/:id - find user by id and his trip history, PathVariable: id
 
     ROLES(ALL), POST: /trip/:id/start_trip - start trip , PathVariable: id(user id)
-        RequestBody example {"startLocationId": 1,"offerType": "ONCE_TIME", "scooterId": int id}
+        RequestBody example {"offerType": "ONCE_TIME"/"SUBSCRIPTION", "scooterId": int id}
     ROLES(ALL), PUT: /trip/:id/finish_trip/{historyId} - finish trip , PathVariable: id(user id), history id
         RequestBody example { "mileage": int mileage,"finishLocationId": int location id}
 

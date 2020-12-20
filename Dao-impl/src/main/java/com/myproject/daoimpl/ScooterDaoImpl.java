@@ -10,7 +10,6 @@ import java.util.ArrayList;
 @Repository
 public class ScooterDaoImpl extends GenericDaoImpl<Scooter> implements ScooterDao {
 
-
     public ScooterDaoImpl() {
         super(Scooter.class);
     }

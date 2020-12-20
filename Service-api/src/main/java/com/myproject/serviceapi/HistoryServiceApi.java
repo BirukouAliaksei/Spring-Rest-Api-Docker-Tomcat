@@ -9,5 +9,4 @@ public interface HistoryServiceApi {
     ArrayList<HistoryDto> findAll();
 
     HistoryDto findById(int id);
-
 }

@@ -15,5 +15,4 @@ public class ScooterDto {
     private boolean availability;
     private int battery;
     private int rentalPointId;
-
 }

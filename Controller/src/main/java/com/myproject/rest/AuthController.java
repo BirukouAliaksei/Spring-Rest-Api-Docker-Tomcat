@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j
 @RestController
 public class AuthController {
+
     @Autowired
     private UserServiceApi userServiceApi;
     @Autowired

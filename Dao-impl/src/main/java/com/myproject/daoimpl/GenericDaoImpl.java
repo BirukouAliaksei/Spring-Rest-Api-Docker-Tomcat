@@ -2,6 +2,7 @@ package com.myproject.daoimpl;
 
 import com.myproject.daoapi.GenericDao;
 import com.myproject.daoimpl.exception.RequestedResourceIsNotAvailableException;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 
-
+@NoArgsConstructor
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @PersistenceContext
@@ -24,10 +25,6 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
         this.type = type;
     }
 
-    public GenericDaoImpl() {
-    }
-
-
     public T findById(int id) {
         try {
             T type = (T) entityManager.find(this.type, new Integer(id));
@@ -37,7 +34,6 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
         }
     }
 
-
     public ArrayList<T> findAll() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(type);
@@ -46,7 +42,6 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
         TypedQuery<T> allQuery = entityManager.createQuery(all);
         return (ArrayList<T>) allQuery.getResultList();
     }
-
 
     @Override
     public T save(T entity) {

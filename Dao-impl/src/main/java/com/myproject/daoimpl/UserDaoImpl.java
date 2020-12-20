@@ -30,7 +30,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
             }
         }
         return userById;
-//        return entityManager.find(User.class, login);
     }
 
     @Override
@@ -55,6 +54,4 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public User updateUser(User entity) {
         return this.update(entity);
     }
-
-
 }

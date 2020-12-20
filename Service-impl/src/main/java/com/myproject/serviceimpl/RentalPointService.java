@@ -2,6 +2,7 @@ package com.myproject.serviceimpl;
 
 import com.myproject.daoapi.RentalPointDao;
 import com.myproject.domain.entity.RentalPoint;
+import com.myproject.dto.dto.RentalPointDetailsDto;
 import com.myproject.dto.dto.RentalPointDto;
 import com.myproject.dto.mapper.RentalPointMapper;
 import com.myproject.serviceapi.RentalPointServiceApi;
@@ -87,6 +88,16 @@ public class RentalPointService implements RentalPointServiceApi {
             throw new RentalPointServiceException("Rental point service throw null");
         } else {
             return rentalPointMapper.toDto(rentalPoint);
+        }
+    }
+
+    @Override
+    public RentalPointDetailsDto findRentalPointScootersById(int id) {
+        RentalPoint rentalPoint = rentalPointDao.findRentalPointById(id);
+        if (rentalPoint == null) {
+            throw new RentalPointServiceException("Rental point service throw null");
+        } else {
+            return rentalPointMapper.toDtoWithDetails(rentalPoint);
         }
     }
 }

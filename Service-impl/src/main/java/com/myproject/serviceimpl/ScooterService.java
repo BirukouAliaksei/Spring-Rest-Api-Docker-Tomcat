@@ -10,7 +10,6 @@ import com.myproject.dto.mapper.ScooterMapper;
 import com.myproject.serviceapi.ScooterServiceApi;
 import com.myproject.serviceimpl.exceptions.ScooterServiceException;
 import com.myproject.serviceimpl.exceptions.ServiceValidationException;
-import com.myproject.serviceimpl.exceptions.UserServiceException;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;

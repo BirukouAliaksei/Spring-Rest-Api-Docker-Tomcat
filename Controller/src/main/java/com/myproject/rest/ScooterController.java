@@ -57,5 +57,4 @@ public class ScooterController {
     public ScooterAdminDto findScooterById(@PathVariable("id") int id) {
         return scooterServiceApi.findScooterById(id);
     }
-
 }

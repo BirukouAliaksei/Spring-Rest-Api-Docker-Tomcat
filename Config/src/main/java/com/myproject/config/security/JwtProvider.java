@@ -3,6 +3,7 @@ package com.myproject.config.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Date;
 import static com.myproject.config.security.SecurityConstants.SECRET;
 
 @Component
-public class JwtProvider {
+public class JwtProvider extends AbstractSecurityWebApplicationInitializer {
 
     public String generateToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);

@@ -3,7 +3,6 @@ package com.myproject.serviceapi;
 import com.myproject.domain.entity.User;
 import com.myproject.dto.dto.HistoryDto;
 import com.myproject.dto.dto.UserDto;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 

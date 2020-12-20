@@ -31,10 +31,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         super(authManager);
     }
 
-//    @Autowired
-//    @Qualifier("customUserDetailsService")
-//    private CustomUserDetails customUserDetailsService;
-
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,

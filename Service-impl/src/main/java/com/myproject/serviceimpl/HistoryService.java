@@ -46,5 +46,4 @@ public class HistoryService implements HistoryServiceApi {
             throw new HistoryServiceException("History service throws null");
         }
     }
-
 }

@@ -40,7 +40,7 @@ class RentalPointServiceTest {
     void createMocks() {
         MockitoAnnotations.initMocks(this);
         rentalPoints.add(new RentalPoint());
-        rentalPointDtos.add(new RentalPointDto(1, "point", 1,1,1, new HashSet<>()));
+        rentalPointDtos.add(new RentalPointDto(1, "point", 1,1,1));
     }
 
     @Test

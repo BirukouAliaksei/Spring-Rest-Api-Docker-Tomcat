@@ -35,5 +35,4 @@ public class SwaggerConfig {
                 .description("List of all the APIs of My Application App through Swagger UI");
         return builder.build();
     }
-
 }

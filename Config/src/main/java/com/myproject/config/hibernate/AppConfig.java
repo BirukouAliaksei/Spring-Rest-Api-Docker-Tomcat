@@ -1,6 +1,6 @@
 package com.myproject.config.hibernate;
 
-import org.modelmapper.*;
+import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +19,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel;
@@ -56,7 +53,6 @@ public class AppConfig {
         transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
     }
-
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -98,5 +94,4 @@ public class AppConfig {
                 .setFieldAccessLevel(AccessLevel.PRIVATE);
         return modelMapper;
     }
-
 }

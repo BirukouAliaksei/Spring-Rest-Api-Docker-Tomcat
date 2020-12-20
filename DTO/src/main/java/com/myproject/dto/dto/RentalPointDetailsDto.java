@@ -10,11 +10,12 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentalPointDto {
+public class RentalPointDetailsDto {
 
     private int id;
     private String address;
     private int parentId;
     private int latitude;
     private int longitude;
+    private Set<Scooter> scooters;
 }

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 public class History {
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @JsonIgnore
     private User user;
@@ -52,7 +53,5 @@ public class History {
     @Column(name = "scooter_id")
     private int scooterId;
     @Transient
-    //FIXME final static
     public final static String discount = "discount";
-
 }

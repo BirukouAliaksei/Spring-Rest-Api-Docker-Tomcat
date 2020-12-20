@@ -19,10 +19,10 @@ import java.util.Set;
 @Table(name = "scooters")
 public class Scooter {
 
-    @OneToMany(mappedBy = "scooter", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "scooter", fetch = FetchType.LAZY)
     private Set<History> histories;
 
-    @ManyToOne(targetEntity = RentalPoint.class)
+    @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "rental_point_id",insertable = false, updatable = false)
     @JsonIgnore
@@ -41,5 +41,4 @@ public class Scooter {
     private int battery;
     @Column(name = "rental_point_id")
     private int rentalPointId;
-
 }

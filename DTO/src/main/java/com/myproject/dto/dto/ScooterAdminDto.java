@@ -14,7 +14,5 @@ public class ScooterAdminDto {
     private boolean availability;
     private int battery;
     private int rentalPointId;
-
     private Set<History> histories;
-
 }

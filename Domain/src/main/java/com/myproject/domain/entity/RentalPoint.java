@@ -31,5 +31,4 @@ public class RentalPoint {
     private int latitude;
     @Column(name = "longitude")
     private int longitude;
-
 }
